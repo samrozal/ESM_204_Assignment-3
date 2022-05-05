@@ -7,6 +7,23 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(rootSolve)
+library(janitor)
+library(here)
 ```
 
-Question 1: Make sure that you are changing the units, because we are given it in lbs but need it in metric tons. I think.
+```{r}
+df <- read_csv(here("data","HW3_data.csv")) %>% 
+  select(-1) %>% 
+  clean_names()
+
+```
+
+Question 1: Make sure that you are changing the units, because we are given it in lbs but need it in metric tons. I think. make sure things are converted correctly!
+
+```{r}
+model_demand_l <- lm(price_cents  ~ q_low_kwh, data=df)
+model_demand_h <- lm(price_cents ~ q_high_kwh, data=df)
+```
+
