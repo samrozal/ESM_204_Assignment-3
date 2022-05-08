@@ -17,7 +17,6 @@ library(here)
 df <- read_csv(here("data","HW3_data.csv")) %>% 
   select(-1) %>% 
   clean_names()
-
 ```
 Last year, the Biden Administration assembled an Inter-agency Working Group (IWG) tasked withupdating the United States Government’s Social Cost of Carbon (SCC), which has not been comprehensively updated since 2010. The Administration has also called on government agencies to address environmental justice, racism, and equity concerns when considering policies designed to mitigate climate change.
 
@@ -51,21 +50,25 @@ Then calculate the social cost of carbon per kwh
   
 - The social cost of carbon per kwh is $0.02/ton
 
-The marginal externality social cost of carbon per a kwh is 0.02/ton 
+The marginal externality social cost of carbon per a kwh is $0.02/ton 
 
-Question 1: Make sure that you are changing the units, because we are given it in lbs but need it in metric tons. I think. make sure things are converted correctly!
-
-
-```{r}
-model_demand_l <- lm(price_cents  ~ q_low_kwh, data=df)
-model_demand_h <- lm(price_cents ~ q_high_kwh, data=df)
-```
 
 # Question 2
 2. What is the aggregate monthly demand curve for electricity? What is the supply curve for
 electricity? What is the “benefit” to consumers under the status quo? What is the “benefit”
 to producers under the status quo? What is the environmental cost under the status quo?
 
+```{r}
+model_demand_l <- lm(price_cents  ~ q_low_kwh, data=df)
+model_demand_h <- lm(price_cents ~ q_high_kwh, data=df)
+```
+
+```{r}
+summary(model_demand_l)
+summary(model_demand_h)
+
+```
+Equation of line 
 
 ```{r}
 # need to rearrange the parameter to get Q(P)! 
@@ -74,6 +77,7 @@ to producers under the status quo? What is the environmental cost under the stat
 # Importantly, since they-intercepts are different, we know that Qagg(P) will have a kink. I include an ifelse() statement to take
 # care of the kink.
 ```
+
 
 ```{r}
 # define a function to get demand
@@ -103,7 +107,7 @@ demand_indv<- function(p, model){
 ```
 
 ```{r}
-price_low = seq(0, 30, length.out = 100)
+price_low = seq(0, 23.3, length.out = 100)
 demand_low <- demand_indv(price_low, model_demand_l)
 
 low_demand <- map(price_low,demand_low) %>% unlist()
@@ -116,7 +120,7 @@ ggplot(df_2, aes(demand_low, price_low)) +
 ```
 
 ```{r}
-price_high = seq(0, 30, length.out = 100)
+price_high = seq(0, 31.6, length.out = 100)
 demand_high <- demand_indv(price_high, model_demand_h)
 
 high_demand <- map(price_high,demand_high) %>% unlist()
@@ -129,7 +133,7 @@ ggplot(df_2, aes(demand_high, price_high)) +
 
 
 ```{r}
-price = seq(0, 30, length.out = 100)
+price = seq(0, 31.6, length.out = 100)
 Qagg <- map(price, demand_agg) %>% unlist()
 
 df<- tibble(Qagg = Qagg, price = price)
@@ -144,7 +148,6 @@ ggplot() +
   geom_line(df_2, mapping=aes(demand_low,price_low))+
   geom_line(df_3, mapping=aes(demand_high,price_high))
 ```
-
 
 ```{r}
 # I also define functions for calculating the consumer surplus:
