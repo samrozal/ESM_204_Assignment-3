@@ -148,7 +148,6 @@ ggplot(df, aes(Qagg, price)) +
 ```
 ```{r}
 ggplot() +
-<<<<<<< HEAD
   geom_line(df, mapping=aes(Qagg, price, color = "blue"))+
   geom_line(df_2, mapping=aes(demand_low,price_low, color = "purple")) +
   geom_line(df_3, mapping=aes(demand_high,price_high, color = "red")) + 
@@ -159,11 +158,6 @@ ggplot() +
        title = "Monthly Demand Curve for Electricity") + 
   theme_minimal() + 
   theme(plot.title = element_text(hjust = 0.5))
-=======
-  geom_line(df, mapping=aes(Qagg, price))+
-  geom_line(df_2, mapping=aes(demand_low,price_low))+
-  geom_line(df_3, mapping=aes(demand_high,price_high))
->>>>>>> 6a533e7e1e4037a2dd86316f76ed75f6351c3ae5
 ```
 
 ```{r}
