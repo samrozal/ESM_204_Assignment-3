@@ -1,8 +1,10 @@
 ---
-title: "ESM 204 Assignment 3"
+title: "Distributional Consequences of Climate Policy- ESM 204 Assignment 3"
 author: "Sam Rozal, Hollie Pennington, Abigail Sanford"
-date: "5/4/2022"
-output: html_document
+date: "May 12th, 2022"
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
