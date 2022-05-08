@@ -1,10 +1,8 @@
 ---
-title: "Distributional Consequences of Climate Policy- ESM 204 Assignment 3"
+title: "ESM 204 Assignment 3"
 author: "Sam Rozal, Hollie Pennington, Abigail Sanford"
-date: "May 12th, 2022"
-output:
-  html_document:
-    code_folding: hide
+date: "5/4/2022"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -56,10 +54,7 @@ The marginal externality social cost of carbon per a kwh is $0.02/ton
 
 
 # Question 2
-2. What is the aggregate monthly demand curve for electricity? What is
-the supply curve for electricity? What is the “benefit” to consumers
-under the status quo? What is the “benefit” to producers under the
-status quo? What is the environmental cost under the status quo?
+2. What is the aggregate monthly demand curve for electricity? What is the supply curve for electricity? What is the “benefit” to consumers under the status quo? What is the “benefit” to producers under the status quo? What is the environmental cost under the status quo?
 
 ```{r}
 model_demand_l <- lm(price_cents  ~ q_low_kwh, data=df)
@@ -71,7 +66,13 @@ summary(model_demand_l)
 summary(model_demand_h)
 
 ```
-Equation of line 
+Equation of lines:
+
+- Low income demand curve: P = 23.4 - 0.00011Q
+
+- High income demand curve: P= 31.6 - 0.000052Q
+
+- Aggregate demand: P = 31.6 - 0.000052Q [Q<#], P= 
 
 ```{r}
 # need to rearrange the parameter to get Q(P)! 
@@ -147,15 +148,9 @@ ggplot(df, aes(Qagg, price)) +
 ```
 ```{r}
 ggplot() +
-  geom_line(df, mapping=aes(Qagg, price, color = "blue"))+
-  geom_line(df_2, mapping=aes(demand_low,price_low, color = "purple")) +
-  geom_line(df_3, mapping=aes(demand_high,price_high, color = "red")) + 
-  scale_color_manual(values = c('red', 'blue', 'purple')) +
-  ylim(0,50) + 
-  labs(x = "Quantity of Electricty (kWh)",
-       y = "Price per kWh",
-       title = "Monthly Demand Curve for Electricity") + 
-  theme_minimal()
+  geom_line(df, mapping=aes(Qagg, price))+
+  geom_line(df_2, mapping=aes(demand_low,price_low))+
+  geom_line(df_3, mapping=aes(demand_high,price_high))
 ```
 
 ```{r}
@@ -171,6 +166,18 @@ CS_agg <- function(p){
   cs <- CS(p,model_demand_l) + CS(p,model_demand_h)
   return(cs)
 }
+
+```
+
+
+```{r}
+#calculate benefit to consumers under status quo"
+
+consumer_surplus_low <- CS(price_low,model_demand_l)
+consumer_surplus_high <- CS(price_high,model_demand_h)
+
+consumer_surplus_agg <- CS_agg(price)
+consumer_surplus_agg
 
 ```
 
