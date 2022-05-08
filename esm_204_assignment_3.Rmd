@@ -155,7 +155,8 @@ ggplot() +
   labs(x = "Quantity of Electricty (kWh)",
        y = "Price per kWh",
        title = "Monthly Demand Curve for Electricity") + 
-  theme_minimal()
+  theme_minimal() + 
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ```{r}
