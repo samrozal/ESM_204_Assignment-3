@@ -41,11 +41,14 @@ reflects the total social cost of one metric ton of CO2, what is the marginal ex
 Unit conversion of lbs to tons
 
 - (0.85lbs/1)(1ton/2204.62lbs) = 0.00038555397 tons
+
 - Therefore, each kwh of electricity emits 0.00038555397 tons of carbon. 
 
 Then calculate the social cost of carbon per kwh 
+
 - (0.00038555397 tons of carbon/kwh)*($51/ metric ton of CO2)= 
   $0.0196632526/ton 
+  
 - The social cost of carbon per kwh is $0.02/ton
 
 The marginal externality social cost of carbon per a kwh is 0.02/ton 
@@ -100,15 +103,28 @@ demand_indv<- function(p, model){
 ```
 
 ```{r}
-qseq = seq(0, 30, length.out = 100)
-demand_low <- demand_indv(qseq, model_demand_l)
+price_low = seq(0, 30, length.out = 100)
+demand_low <- demand_indv(price_low, model_demand_l)
 
-low_demand <- map(price,demand_low) %>% unlist()
-df_2 <- tibble(demand_low = demand_low, price = price)
+low_demand <- map(price_low,demand_low) %>% unlist()
 
-ggplot(df_2, aes(demand_low, price)) +
+df_2 <- tibble(demand_low = demand_low, price_low = price_low)
+
+ggplot(df_2, aes(demand_low, price_low)) +
   geom_line()
   
+```
+
+```{r}
+price_high = seq(0, 30, length.out = 100)
+demand_high <- demand_indv(price_high, model_demand_h)
+
+high_demand <- map(price_high,demand_high) %>% unlist()
+
+df_3 <- tibble(demand_high = demand_high, price_high = price_high)
+
+ggplot(df_2, aes(demand_high, price_high)) +
+  geom_line()
 ```
 
 
@@ -125,23 +141,10 @@ ggplot(df, aes(Qagg, price)) +
 ```{r}
 ggplot() +
   geom_line(df, mapping=aes(Qagg, price))+
-  geom_line(df_2, mapping=aes(demand_low,price))
+  geom_line(df_2, mapping=aes(demand_low,price_low))+
+  geom_line(df_3, mapping=aes(demand_high,price_high))
 ```
 
-
-```{r}
-demand <- function(p, model){
-  q <- (p - model$coefficients[[1]])/model$coefficients[[2]]
-  q <- ifelse(q<0,0,q)
-  return(q)
-}
-```
-
-```{r}
-
-demand_low <- demand(p,model_demand_l)
-
-```
 
 ```{r}
 # I also define functions for calculating the consumer surplus:
