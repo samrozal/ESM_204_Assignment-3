@@ -62,9 +62,10 @@ model_demand_h <- lm(price_cents ~ q_high_kwh, data=df)
 ```
 
 # Question 2
-2. What is the aggregate monthly demand curve for electricity? What is the supply curve for
-electricity? What is the “benefit” to consumers under the status quo? What is the “benefit”
-to producers under the status quo? What is the environmental cost under the status quo?
+2. What is the aggregate monthly demand curve for electricity? What is
+the supply curve for electricity? What is the “benefit” to consumers
+under the status quo? What is the “benefit” to producers under the
+status quo? What is the environmental cost under the status quo?
 
 
 ```{r}
