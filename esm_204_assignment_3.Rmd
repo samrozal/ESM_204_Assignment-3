@@ -72,7 +72,7 @@ Equation of lines:
 
 - High income demand curve: P= 31.6 - 0.000052Q
 
-- Aggregate demand: P = 31.6 - 0.000052Q [Q<#], P= 
+- Aggregate demand: P = 31.6 - 0.000052Q [Q<], P= 
 
 ```{r}
 # need to rearrange the parameter to get Q(P)! 
@@ -110,6 +110,7 @@ demand_indv<- function(p, model){
 }
 ```
 
+
 ```{r}
 price_low = seq(0, 23.3, length.out = 100)
 demand_low <- demand_indv(price_low, model_demand_l)
@@ -122,6 +123,10 @@ ggplot(df_2, aes(demand_low, price_low)) +
   geom_line()
   
 ```
+```{r}
+
+```
+
 
 ```{r}
 price_high = seq(0, 31.6, length.out = 100)
@@ -173,7 +178,7 @@ ggplot() +
 # I also define functions for calculating the consumer surplus:
 
 CS <- function(p, model){
-  q <- demand(p, model)
+  q <- demand_indv(p, model)
   cs <- 0.5*(model$coefficients[[1]] - p)*q
   return(cs)
 }
@@ -189,10 +194,13 @@ CS_agg <- function(p){
 ```{r}
 #calculate benefit to consumers under status quo"
 
-consumer_surplus_low <- CS(price_low,model_demand_l)
-consumer_surplus_high <- CS(price_high,model_demand_h)
+consumer_surplus_low <- CS(55,model_demand_l)
+consumer_surplus_high <- CS(55,model_demand_h)
 
-consumer_surplus_agg <- CS_agg(price)
+consumer_surplus_low
+consumer_surplus_high
+
+consumer_surplus_agg <- CS_agg(55)
 consumer_surplus_agg
 
 ```
