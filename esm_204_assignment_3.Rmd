@@ -146,6 +146,15 @@ ggplot(df, aes(Qagg, price)) +
   geom_line()
 
 ```
+
+```{r}
+# Calculate the supply curve for electricity. We know the current price is $0.10/kWh, and the MC electricity curve is linear and will pass through the 0 intercept. 
+
+
+
+```
+
+
 ```{r}
 ggplot() +
   geom_line(df, mapping=aes(Qagg, price, color = "blue"))+
@@ -187,4 +196,6 @@ consumer_surplus_agg <- CS_agg(price)
 consumer_surplus_agg
 
 ```
+
+
 
