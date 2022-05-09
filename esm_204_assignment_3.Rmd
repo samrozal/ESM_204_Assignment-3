@@ -1,8 +1,10 @@
 ---
-title: "ESM 204 Assignment 3"
+title: "Distributional Consequences of Climate Policy- ESM 204 Assignment 3"
 author: "Sam Rozal, Hollie Pennington, Abigail Sanford"
-date: "5/4/2022"
-output: html_document
+date: "May 12th, 2022"
+output:
+  html_document:
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -18,7 +20,7 @@ df <- read_csv(here("data","HW3_data.csv")) %>%
   select(-1) %>% 
   clean_names()
 ```
-Last year, the Biden Administration assembled an Inter-agency Working Group (IWG) tasked withupdating the United States Government’s Social Cost of Carbon (SCC), which has not been comprehensively updated since 2010. The Administration has also called on government agencies to address environmental justice, racism, and equity concerns when considering policies designed to mitigate climate change.
+Last year, the Biden Administration assembled an Inter-agency Working Group (IWG) tasked with updating the United States Government’s Social Cost of Carbon (SCC), which has not been comprehensively updated since 2010. The Administration has also called on government agencies to address environmental justice, racism, and equity concerns when considering policies designed to mitigate climate change.
 
 While the Interagency Working Group develops a new SCC, the Biden Administration’s “interim” value is $51 per metric ton of CO2. The electricity sector is the second largest source of greenhouse gas emissions in the U.S. (after transportation). In this homework, you will consider the distributional consequences of imposing a household electricity tax based on the SCC to address the climate change problem.
 
@@ -42,9 +44,7 @@ To find the MEC we use metric conversion to go from $/ton to cents/kWh:
 
 - (5,100 cents/ 1 metric ton)(1 metric ton/2,205 lbs)(0.85lbs/1kWh)= 2 cents/kWh
 
-The marginal external social cost of carbon is *$0.02/kWh*
-
-
+The marginal external social cost of carbon is **$0.02/kWh**
 
 # Question 2
 
