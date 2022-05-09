@@ -7,8 +7,8 @@ output:
     code_folding: hide
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include = TRUE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(rootSolve)
 library(janitor)
@@ -37,7 +37,7 @@ income consumers.
 
 # Question 1
 
-1. One kWh of electricity emits 0.85 pounds of CO2. Assuming that the interim SCC correctly
+One kWh of electricity emits 0.85 pounds of CO2. Assuming that the interim SCC correctly
 reflects the total social cost of one metric ton of CO2, what is the marginal external cost per kwH of electricity?
 
 To find the MEC we use metric conversion to go from $/ton to cents/kWh:
@@ -48,7 +48,7 @@ The marginal external social cost of carbon is **$0.02/kWh**
 
 # Question 2
 
-2. What is the aggregate monthly demand curve for electricity? What is the supply curve for 
+What is the aggregate monthly demand curve for electricity? What is the supply curve for 
 electricity? What is the “benefit” to consumers under the status quo? What is the “benefit” to 
 producers under the status quo? What is the environmental cost under the status quo?
 
