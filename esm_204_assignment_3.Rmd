@@ -164,6 +164,10 @@ supply_q <- function(p){
   return(q)
 }
 ```
+```{r}
+demand_agg(10)
+```
+
 
 ```{r}
 supply_price = seq(0, 31.6, length.out = 100)
@@ -194,16 +198,15 @@ ggplot() +
   theme_minimal() + 
   theme(plot.title = element_text(hjust = 0.5))
 ```
-Supply line:
-
-- P = 1.863171e-05Q
-
-
 
 
 ```{r}
-demand_agg(10)
+#Find the q free market value at the market equilibrium point 
+#We know that the free market is at equilibrium where p=10, because the current cost of electricity is 10 cents/kwh
+Q_f <- demand_agg(10)
+P_f <- 10
 ```
+
 ```{r}
 # I also define functions for calculating the consumer surplus:
 
@@ -217,7 +220,6 @@ CS_agg <- function(p){
   cs <- CS(p,model_demand_l) + CS(p,model_demand_h)
   return(cs)
 }
-
 ```
 
 
@@ -235,5 +237,29 @@ consumer_surplus_agg
 
 ```
 
+```{r}
+#function for MPC
+MPC<- function(q){
+  p <- mpc_slope*q
+  return(p)
+}
+
+PS <- function(q){
+  ps <- 0.5*(MPC(q))*q
+  return(ps)
+}
+
+```
+
+```{r}
+supply_q(10)
+PS(536719.5)
+producer_surplus_f <- PS(supply_q(10))
+producer_surplus_f
+
+```
+```{r}
+
+```
 
 
