@@ -42,7 +42,7 @@ reflects the total social cost of one metric ton of CO2, what is the marginal ex
 
 To find the MEC we use metric conversion to go from $/ton to cents/kWh:
 
-- (5,100 cents/ 1 metric ton)(1 metric ton/2,205 lbs)(0.85lbs/1kWh)= 2 cents/kWh
+- (5,100 cents/ 1 metric ton)(1 metric ton/2,205 lbs)(0.85lbs/1kWh)= 1.96 cents/kWh
 
 The marginal external social cost of carbon is **$0.02/kWh**
 
@@ -118,10 +118,6 @@ ggplot(df_2, aes(demand_low, price_low)) +
   geom_line()
   
 ```
-```{r}
-
-```
-
 
 ```{r}
 price_high = seq(0, 31.6, length.out = 100)
@@ -258,8 +254,59 @@ producer_surplus_f <- PS(supply_q(10))
 producer_surplus_f
 
 ```
+
 ```{r}
+#environmental cost 
+environmental_cost <- Q_f*1.8
+environmental_cost
+```
+# Question 3
+
+Dude IDK what the flying fuck this question is asking...I'm gonna do number 4 instead right now because my brain is like "nah, nope" to this question right now...
+
+# Question 4
+4. Derive the optimal electricity tax (in cents per kWh) using the interim SCC. Noting that recent
+research has shown the poor face a disproportionate share of the impacts from climate change,
+assume that the climate externality is borne entirely by the “low” income group. What would
+be the effects of this tax on:
+(a) The amount of electricity produced and consumed
+(b) The price of electricity
+(c) Overall welfare of “high” income consumers
+(d) Overall welfare of “low” income consumers
+(e) Power suppliers (i.e., electricity producers)
+(f) Total environmental damage
+(g) Total tax revenue generated
+
+```{r}
+#First we need to find the marginal social cost including the externality 
+
+#the optimal tax is equal to the MEC. Therefore the Marginal social cost is just 1.96 cents
+
+#Shift the aggregate demand curve down to account for tax. 
+
+
+demand_p_t <-function(q,model){
+  p <- (model$coefficients[[1]])- 1.96 + (model$coefficients[[2]]*q)+
+  return(p)
+}
+
 
 ```
+```{r}
+demand_p_t_eq <- function(q)  (model_demand_l$coefficients[[1]]+model_demand_h$coefficients[[1]])- 1.96 + ((model_demand_l$coefficients[[2]]+model_demand_h$coefficients[[2]])*q) 
 
+mpc_eq <- function(q)(mpc_slope*q)
+```
+
+```{r}
+#create data frames for the MPC equation and the new demand curve function
+```
+
+```{r}
+xy <- intersect(demand_p_t_eq,mpc_eq)
+```
+
+```{r}
+p_t <- demand_p_t()= MPC()
+```
 
