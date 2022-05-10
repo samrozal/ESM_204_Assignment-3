@@ -295,8 +295,14 @@ demand_p <- function(q,model,t){
   p <- (q*model$coefficients[[2]])+ (model$coefficients[[1]]-t)
 }
 
+#demand_new_low <- function(p, model){
+ # q <- (p - (model$coefficients[[1]]-t))/model$coefficients[[2]]
+  #q <- ifelse(q<0,0,q)
+  #return(q)
+#}   
+
 demand_new_low <- function(p, model){
-  q <- (p - (model$coefficients[[1]]-t))/model$coefficients[[2]]
+  q <- (p - (model$coefficients[[1]]-1.96))/model$coefficients[[2]]
   q <- ifelse(q<0,0,q)
   return(q)
 }   
@@ -309,12 +315,49 @@ demand_agg_new <- function(p){
 ```
 
 ```{r}
-#testing the demand 
+#testing the new demand curve to make sure its ok
+
+price_new = seq(0, 31.6, length.out = 100)
+Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
+
+df_5<- tibble(Qagg_new = Qagg_new, price_new = price_new)
+
+ggplot(df, aes(Qagg_new, price_new)) +
+  geom_line()
+
+```
+
+```{r}
+#map the new damnd curve and the old demand curve to make sure I did
+ggplot() +
+  geom_line(df, mapping=aes(Qagg, price, color = "Old Agg Demand"))+
+  geom_line(df_2, mapping=aes(Qagg_new,price_new, color = "New Agg demand")) +
+  scale_color_manual(values = c('red', 'blue')) +
+  ylim(0,50) + 
+  xlim(0,1000000)+
+  labs(x = "Quantity of Electricty (kWh)",
+       y = "Price per kWh",
+       title = "Monthly Demand Curve for Electricity") + 
+  theme_minimal()
+```
+
+```{r}
+mpc_eq <- function(q)(mpc_slope*q)
 ```
 
 
 ```{r}
-mpc_eq <- function(q)(mpc_slope*q)
+intersect <- function(l1, l2){
+    x <- (l2[1] - l1[1]) / (l1[2] - l2[2])
+    y <- l1[1] + l1[2] * x
+    return(xy=c(x, y))
+}
+
+l1 <- c(df_5)
+l2 <- c(df_4)
+
+xy <- intersect(l1,l2)
+xy
 ```
 
 ```{r}
