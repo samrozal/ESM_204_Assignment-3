@@ -149,8 +149,32 @@ ggplot(df, aes(Qagg, price)) +
 
 ```{r}
 # Calculate the supply curve for electricity. We know the current price is $0.10/kWh, and the MC electricity curve is linear and will pass through the 0 intercept. 
+# Therefore, the slope of the supply curve can be found by doing (y2-y1/x2-x2) using the points (0,0) and (demand_agg(10),10). The zeros cancel out so we get:
 
+mpc_slope <- (10/(demand_agg(10)))
+mpc_slope
 
+supply_p <- function(q){
+  p <- mpc_slope*q
+  return(q)
+}
+
+supply_q <- function(p){
+  q <- (p/mpc_slope)
+  return(q)
+}
+```
+
+```{r}
+supply_price = seq(0, 31.6, length.out = 100)
+q_supply <- supply_q(price_high)
+
+supply_something<- map(price_high,q_supply) %>% unlist()
+
+df_4 <- tibble(q_supply = q_supply, supply_price = supply_price)
+
+ggplot(df_4, aes(q_supply,supply_price)) +
+  geom_line()
 
 ```
 
@@ -160,27 +184,26 @@ ggplot() +
   geom_line(df, mapping=aes(Qagg, price, color = "blue"))+
   geom_line(df_2, mapping=aes(demand_low,price_low, color = "purple")) +
   geom_line(df_3, mapping=aes(demand_high,price_high, color = "red")) + 
-  scale_color_manual(values = c('red', 'blue', 'purple')) +
+  geom_line(df_4, mapping=aes(q_supply,supply_price, color = "yellow"))+
+  scale_color_manual(values = c('red', 'blue', 'purple', 'green')) +
   ylim(0,50) + 
+  xlim(0,1000000)+
   labs(x = "Quantity of Electricty (kWh)",
        y = "Price per kWh",
        title = "Monthly Demand Curve for Electricity") + 
   theme_minimal() + 
   theme(plot.title = element_text(hjust = 0.5))
 ```
-```{r}
-mpc_slope <- (10/(demand_agg(10)))
-mpc_slope
-```
 Supply line:
 
 - P = 1.863171e-05Q
 
+
+
+
 ```{r}
 demand_agg(10)
 ```
-
-
 ```{r}
 # I also define functions for calculating the consumer surplus:
 
