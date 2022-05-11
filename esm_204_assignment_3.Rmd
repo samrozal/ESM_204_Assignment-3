@@ -13,6 +13,7 @@ library(tidyverse)
 library(rootSolve)
 library(janitor)
 library(here)
+library(equatiomatic)
 ```
 
 ```{r}
@@ -581,7 +582,7 @@ demand:
 # divide this demand curve by 2
 new_model_demand_h <- function(p,model){
 new_model_demand_h <- (p - (0.5 * model$coefficients[1]))/ model$coefficients[2]
-new_model_demand_h <- ifelse(q<0,0,q)
+new_model_demand_h <- ifelse(q<0, 0, q)
   return(q)
 }
 ```
