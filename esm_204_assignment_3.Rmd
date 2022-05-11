@@ -461,7 +461,24 @@ tax_revenue_t_51
 (b) Overall welfare of “low” income consumers
 (c) Electricity producers
 
+
 ```{r}
+# Calculate electricity consumption before tax
+
+low_consume <- demand(model_demand_l, p = 10)/((demand(model_demand_h, p = 10)) + demand(model_demand_l, p=10))
+# 0.2260845 = 22.61%
+
+high_consume <- demand(model_demand_h, p = 10)/((demand(model_demand_h, p = 10)) + demand(model_demand_l, p=10))
+# 0.7739155 = 77.39%
+
+h_welfare <- (consumer_surplus_high_t_51 + high_consume * tax_revenue_t_51)/100
+l_welfare <- (consumer_surplus_low_t_51 + low_consume * tax_revenue_t_51)/100
+ps_question5 <- ps_change/100
+```
+
+```{r}
+# Create new data frame with the different price/kWh for different SCC values (I couldn't figure out how to do this, so I did it by hand below. I just know that we should, can someone help me please)
+
 # Calculate the different price/kWh for different SCC values.
 # $75/ton SCC value = $75/(2205lbs/$0.85) = $0.0289/kWh
 # $100/ton SCC value = $100/(2205lbs/$0.85) = $0.0385/kWh
@@ -475,18 +492,13 @@ price_scc_150 <- 5.78
 
 ```
 
-```{r}
-# Calculate consumption before tax
+####  Social Cost of Carbon at $51/ton
 
-low_consume <- demand(10, model_demand_l)/Q_f
-# 0.2260845 = 22.61%
-high_consume <- demand(10, model_demand_h)/Q_f
-# 0.7739155 = 77.39%
-```
+**A:** The overall welfare to “high” income consumers is $`r round(h_welfare, 2)`.
 
-```{r}
+**B:** The overall welfare of “low” income consumers is $`r round(l_welfare, 2)`. This indicates that for low income consumers there is a net loss.
 
-```
+**C:** The overall welfare to electricity producers is $`r round(ps_question5/100, 3)`
 
 
 

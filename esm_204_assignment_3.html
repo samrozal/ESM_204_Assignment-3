@@ -549,9 +549,36 @@ tax_revenue_t_51</code></pre>
 <li>Overall welfare of “low” income consumers</li>
 <li>Electricity producers</li>
 </ol>
+<pre class="r"><code># Calculate electricity consumption before tax
+
+low_consume &lt;- demand(model_demand_l, p = 10)/((demand(model_demand_h, p = 10)) + demand(model_demand_l, p=10))
+# 0.2260845 = 22.61%
+
+high_consume &lt;- demand(model_demand_h, p = 10)/((demand(model_demand_h, p = 10)) + demand(model_demand_l, p=10))
+# 0.7739155 = 77.39%
+
+h_welfare &lt;- (consumer_surplus_high_t_51 + high_consume * tax_revenue_t_51)/100
+l_welfare &lt;- (consumer_surplus_low_t_51 + low_consume * tax_revenue_t_51)/100
+ps_question5 &lt;- ps_change/100</code></pre>
+<pre class="r"><code># Create new data frame with the different price/kWh for different SCC values (I couldn&#39;t figure out how to do this, so I did it by hand below. I just know that we should, can someone help me please)
+
+# Calculate the different price/kWh for different SCC values.
+# $75/ton SCC value = $75/(2205lbs/$0.85) = $0.0289/kWh
+# $100/ton SCC value = $100/(2205lbs/$0.85) = $0.0385/kWh
+# $125/ton SCC value = $125/(2205lbs/$0.85) = $0.0482/kWh
+# $150/ton SCC value = $150/(2205lbs/$0.85) = $0.0578/kWh
+
+price_scc_75 &lt;- 2.89
+price_scc_100 &lt;- 3.85
+price_scc_125 &lt;- 4.82
+price_scc_150 &lt;- 5.78</code></pre>
+<div id="social-cost-of-carbon-of-51ton" class="section level4">
+<h4>Social Cost of Carbon of $51/ton</h4>
+<p><strong>A:</strong> The overall welfare to “high” income consumers is $4.346399^{4}. <strong>B:</strong> The overall welfare of “low” income consumers is $7772.28. This indicates that for low income consumers there is a net loss. <strong>C:</strong> The overall welfare to electricity producers is $233.271</p>
 <pre class="r"><code># to calculate the &quot;high&quot; income consumers welfare under the tax rebate, it is CS + tax rebate </code></pre>
 <pre class="r"><code>#Write a function for rebate 
 high_rebate &lt;- q_tax_51</code></pre>
+</div>
 </div>
 <div id="abi-notes" class="section level1">
 <h1>Abi notes</h1>
