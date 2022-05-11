@@ -501,6 +501,10 @@ price_scc_150 <- 5.78
 **C:** The overall welfare to electricity producers is $`r round(ps_question5/100, 3)`
 
 
+#### Social Cost of Carbon at $75/ton
+
+
+
 
 ```{r}
 # to calculate the "high" income consumers welfare under the tax rebate, it is CS + tax rebate 
