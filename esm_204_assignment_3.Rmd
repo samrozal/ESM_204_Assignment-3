@@ -272,13 +272,11 @@ cs_l <- CS(10, model_demand_l)
 cs_h <- CS(10, model_demand_h)
 ```
 
+High income consumers have higher benefit when compared to low income consumers. 
 
-The consumer benefit for low income consumers is $`r round(cs_l/100, 2)`.
+- The consumer benefit for low income consumers is $`r round(cs_l/100, 2)`.
 
-The consumer benefit for high income consumers is $`r round(cs_h/100, 2)`.
-
-When comparing high and low income consumer surpluses, the low income consumers have a smaller income by a difference of $`r round((cs_h-cs_l)/100, 2)`. 
-
+- The consumer benefit for high income consumers is $`r round(cs_h/100, 2)`.
 
 
 # Question 4
@@ -421,6 +419,10 @@ consumer_surplus_low_true <- consumer_surplus_low-environmental_cost_t_51
 consumer_surplus_low_true
 
 ```
+
+**C:** The overall welfare of "high" income consumers, with cost of taxes included, decreases by $`r round(consumer_surplus_high_t_51, 0)`.
+
+**D:** The overall welfare of "low" income consumers, with cost of taxes included, decreases by $`r round(consumer_surplus_low_t_51, 0)`.
 
 ```{r}
 PS <- function(q){
