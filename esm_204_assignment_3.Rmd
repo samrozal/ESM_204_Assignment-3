@@ -41,7 +41,7 @@ One kWh of electricity emits 0.85 pounds of CO2. Assuming that the interim SCC c
 
 To find the MEC we use metric conversion to go from $/ton to cents/kWh:
 
-- (5,100 cents/ 1 metric ton)(1 metric ton/2,205 lbs)(0.85lbs/1kWh)= 1.96 cents/kWh
+- (5,100 cents/ 1 metric ton)(1 metric ton/2,205 lbs)(0.85lbs/1kWh)= 1.97 cents/kWh
 
 The marginal external social cost of carbon is **$0.02/kWh**
 
@@ -263,7 +263,7 @@ producer_surplus_f
 
 ```{r}
 #environmental cost 
-environmental_cost <- Q_f*1.96
+environmental_cost <- Q_f*1.97
 environmental_cost
 ```
 # Question 3
@@ -304,7 +304,7 @@ High income consumers have higher benefit when compared to low income consumers.
 
 
 demand_p_t <-function(q,model){
-  p <- (model$coefficients[[1]])- 1.96 + (model$coefficients[[2]]*q)+
+  p <- (model$coefficients[[1]])- 1.97 + (model$coefficients[[2]]*q)+
   return(p)
 }
 
