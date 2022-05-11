@@ -265,8 +265,7 @@ environmental_cost
 Dude IDK what the flying fuck this question is asking...I'm gonna do number 4 instead right now because my brain is like "nah, nope" to this question right now...
 
 # Question 4
-4. Derive the optimal electricity tax (in cents per kWh) using the interim SCC. Noting that recent
-research has shown the poor face a disproportionate share of the impacts from climate change, assume that the climate externality is borne entirely by the “low” income group. What would be the effects of this tax on:
+4. Derive the optimal electricity tax (in cents per kWh) using the interim SCC. Noting that recent research has shown the poor face a disproportionate share of the impacts from climate change, assume that the climate externality is borne entirely by the “low” income group. What would be the effects of this tax on:
 (a) The amount of electricity produced and consumed
 (b) The price of electricity
 (c) Overall welfare of “high” income consumers
@@ -291,10 +290,6 @@ demand_p_t <-function(q,model){
 ```
 
 ```{r}
-demand_p <- function(q,model,t){
-  p <- (q*model$coefficients[[2]])+ (model$coefficients[[1]]-t)
-}
-
 #demand_new_low <- function(p, model){
  # q <- (p - (model$coefficients[[1]]-t))/model$coefficients[[2]]
   #q <- ifelse(q<0,0,q)
@@ -317,6 +312,7 @@ demand_agg_new_eq <- function(q)(demand_new_low(p, model_demand_l) + demand(p, m
 ```
 
 ```{r}
+#creating the data frame for the new 
 price_new = seq(0, 29.5, length.out = 100)
 Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
 
@@ -348,23 +344,6 @@ mpc_eq <- function(q)(mpc_slope*q)
 ```
 
 
-
-
-```{r}
-
-supply_p <- function(q){
-  p <- mpc_slope*q
-  return(p)
-}
-
-supply_q <- function(p){
-  q <- (p/mpc_slope)
-  return(q)
-}
-
-```
-
-
 ```{r}
 # First I need to find the new demand curve by shifting the aggreh=get demand cueve down by the optimal tax
 
@@ -380,6 +359,7 @@ q_free_market <- demand_agg(p_free_market)
 q_free_market
 ```
 ```{r}
+#calculating the intercept points
 equilibrium_pt_tax_51 <- function(p)((demand_new(p, model_demand_l) + demand_new(p, model_demand_h))-(p/mpc_slope))
 p_tax_51 <- uniroot(equilibrium_pt_tax_51, c(0,600000))$root
 p_tax_51
@@ -390,7 +370,7 @@ q_tax_51
 ```
 
 ```{r}
-# I also define functions for calculating the consumer surplus:
+# Writing a new function for  consumer surplus:
 
 CS_new <- function(p, model){
   q <- demand_new(p, model)
@@ -426,7 +406,6 @@ consumer_surplus_low_true
 ```
 
 ```{r}
-
 PS <- function(q){
   ps <- 0.5*(MPC(q))*q
   return(ps)
@@ -434,4 +413,16 @@ PS <- function(q){
 # calculate the producer surplus 
 PS(q_tax_51)
 ```
+
+```{r}
+#calculate environmental damage --> I did this already 
+environmental_cost_t_51
+```
+
+```{r}
+#calculate tax revenue 
+tax_reveue_t_51 <- q_tax_51*1.96
+```
+
+
 
