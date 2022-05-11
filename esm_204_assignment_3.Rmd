@@ -600,6 +600,8 @@ e_demand_agg <- function(p){
 uniroot_after_etax <- uniroot(function(p)
   e_demand_agg(p) - supply_q(p), 
   interval = c(0,20))
+
+# eqmQ = function(a, b, c){qsar = a/(b+c), return(qstart), newQ = eqmQ(newq, newb, newc)}
 ```
 
 
@@ -613,7 +615,7 @@ uniroot_after_etax <- uniroot(function(p)
 (c) What value of the electricity tax makes the total environmental damage the same as the damage when solar panels are available to the high income group?
 
 ```{r}
-# I have no idea
+# after we shift the demand curve by half, find MEC from scc (total env damage) under new demand curve, q * mec because area under the mec evaulated at q = total env damage, we are trying to find the tax that will make the two wedges (between MSC and MPC) the same? 
 ```
  
 
