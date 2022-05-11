@@ -37,8 +37,7 @@ income consumers.
 
 # Question 1
 
-One kWh of electricity emits 0.85 pounds of CO2. Assuming that the interim SCC correctly
-reflects the total social cost of one metric ton of CO2, what is the marginal external cost per kwH of electricity?
+One kWh of electricity emits 0.85 pounds of CO2. Assuming that the interim SCC correctly reflects the total social cost of one metric ton of CO2, what is the marginal external cost per kwH of electricity?
 
 To find the MEC we use metric conversion to go from $/ton to cents/kWh:
 
@@ -115,8 +114,9 @@ low_demand <- map(price_low,demand_low) %>% unlist()
 df_2 <- tibble(demand_low = demand_low, price_low = price_low)
 
 ggplot(df_2, aes(demand_low, price_low)) +
-  geom_line()
-  
+  geom_line() + 
+  labs(title = "Low Income Supply and Demand for Solar Panels", x = "low income demand", y = "low income price") + 
+  theme_light()
 ```
 
 ```{r}
@@ -128,7 +128,9 @@ high_demand <- map(price_high,demand_high) %>% unlist()
 df_3 <- tibble(demand_high = demand_high, price_high = price_high)
 
 ggplot(df_2, aes(demand_high, price_high)) +
-  geom_line()
+  geom_line() + 
+  labs(title = "title", x = "high demand", y = "high price") + 
+  theme_light()
 ```
 
 
@@ -139,7 +141,9 @@ Qagg <- map(price, demand_agg) %>% unlist()
 df<- tibble(Qagg = Qagg, price = price)
 
 ggplot(df, aes(Qagg, price)) +
-  geom_line()
+  geom_line() + 
+  labs(title = "title", x = "Aggregate Demand Curve", y = "Price") + 
+  theme_light()
 
 ```
 
@@ -174,7 +178,9 @@ supply_something<- map(price_high,q_supply) %>% unlist()
 df_4 <- tibble(q_supply = q_supply, supply_price = supply_price)
 
 ggplot(df_4, aes(q_supply,supply_price)) +
-  geom_line()
+  geom_line() + 
+  labs(title = "title", x = "Q Supply", y = "Price of Supply") + 
+  theme_light()
 
 ```
 
@@ -485,10 +491,10 @@ ps_question5 <- ps_change/100
 # $125/ton SCC value = $125/(2205lbs/$0.85) = $0.0482/kWh
 # $150/ton SCC value = $150/(2205lbs/$0.85) = $0.0578/kWh
 
-price_scc_75 <- 2.89
-price_scc_100 <- 3.85
-price_scc_125 <- 4.82
-price_scc_150 <- 5.78
+# price_scc_75 <- 2.89
+# price_scc_100 <- 3.85
+# price_scc_125 <- 4.82
+# price_scc_150 <- 5.78
 
 ```
 
@@ -505,19 +511,71 @@ price_scc_150 <- 5.78
 ```{r}
 # to calculate the "high" income consumers welfare under the tax rebate, it is CS + tax rebate 
 
-
-
+# I think these are the CS but I am struggling to find tax rebate. I know this code is not complete yet, I am just trying to figure things out. 
+# price_CW_75 <- 2.89 + 
+# price_CW_100 <- 3.85 + 
+# price_CW_125 <- 4.82 + 
+# price_CW_150 <- 5.78 +
 ```
 
 ```{r}
 #Write a function for rebate 
 high_rebate <- q_tax_51
+
 ```
+# Question 6 
+6. Suppose the “high” income group has access to expensive home solar generation. This lowers the electricity demand curve for the “high” income group by half (vertically). Under this new
+demand:
+
+(a) What is total electricity consumption?
+
+```{r}
+model_demand_h
+```
+
+```{r}
+# how do I divide this model by 2
+# new_model_demand_h <- lm(formula = (price_cents ~ q_high_kwh) * 0.5, data = df)
+```
+
+```{r}
+# I think we take the code from Q2 and and use the new model _ demand _ h curve I am trying to create in the code chunk above
+# price_high = seq(0, 31.6, length.out = 100)
+# demand_high <- demand(price_high, new_model_demand_h)
+
+
+# high_demand <- map(price_high,demand_high) %>% unlist()
+
+# df_3 <- tibble(demand_high = demand_high, price_high = price_high)
+
+# ggplot(df_2, aes(demand_high, price_high)) +
+  # geom_line() + 
+ #  labs(title = "title", x = "high demand", y = "high price") + 
+ #  theme_light()
+
+```
+
+
+
+(b) What is the total environmental externality?
+
+```{r}
+# Use code from Q2 to but with new numbers from 6a 
+```
+
+
+(c) What value of the electricity tax makes the total environmental damage the same as the damage when solar panels are available to the high income group?
+
+```{r}
+# I have no idea
+```
+ 
+
 
 
 # Abi notes
 Stuff we still have to do:
-Adjust graphs in question 2 to not look bad, and add labels to the curves
-Fill in the right code portions for A and B
+Adjust graphs in question 2 to not look bad, and add labels to the curves -- Hollie updated the labels but did not label them cause idk what they're labeled. 
+Fill in the right code portions for A and B 
 Do questions 5 and 6
 Remove the parts of the code that show up in the html that don't need to be there (this should be done at the end)
