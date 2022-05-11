@@ -530,31 +530,28 @@ demand:
 (a) What is total electricity consumption?
 
 ```{r}
-model_demand_h
+# divide this demand curve by 2
+new_model_demand_h <- function(p,model){
+new_model_demand_h <- (p - (0.5 * model$coefficients[1]))/ model$coefficients[2]
+new_model_demand_h <- ifelse(q<0,0,q)
+  return(q)
+}
 ```
 
 ```{r}
-# how do I divide this model by 2
-# new_model_demand_h <- lm(formula = (price_cents ~ q_high_kwh) * 0.5, data = df)
+#new agg demand function 
+e_demand_agg <- function(p){
+  e_q <- new_model_demand_h(p, model_demand_l) + new_model_demand_h(p, model_demand_h)
+  return(e_q)
+}
 ```
 
 ```{r}
-# I think we take the code from Q2 and and use the new model _ demand _ h curve I am trying to create in the code chunk above
-# price_high = seq(0, 31.6, length.out = 100)
-# demand_high <- demand(price_high, new_model_demand_h)
-
-
-# high_demand <- map(price_high,demand_high) %>% unlist()
-
-# df_3 <- tibble(demand_high = demand_high, price_high = price_high)
-
-# ggplot(df_2, aes(demand_high, price_high)) +
-  # geom_line() + 
- #  labs(title = "title", x = "high demand", y = "high price") + 
- #  theme_light()
-
+#to find new equilibrium price set the functions equal to each other
+uniroot_after_etax <- uniroot(function(p)
+  e_demand_agg(p) - supply_q(p), 
+  interval = c(0,20))
 ```
-
 
 
 (b) What is the total environmental externality?
