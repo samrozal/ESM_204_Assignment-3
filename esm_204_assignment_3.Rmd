@@ -301,17 +301,31 @@ demand_p <- function(q,model,t){
   #return(q)
 #}   
 
-demand_new_low <- function(p, model){
+demand_new<- function(p, model){
   q <- (p - (model$coefficients[[1]]-1.96))/model$coefficients[[2]]
   q <- ifelse(q<0,0,q)
   return(q)
 }   
 
 demand_agg_new <- function(p){
-  q <- demand_new_low(p, model_demand_l) + demand(p, model_demand_h)
+  q <- demand_new(p, model_demand_l) + demand_new(p, model_demand_h)
   return(q)
 }
 
+demand_agg_new_eq <- function(q)(demand_new_low(p, model_demand_l) + demand(p, model_demand_h))
+
+```
+
+```{r}
+price_new = seq(0, 29.5, length.out = 100)
+Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
+
+df_new <- tibble(Qagg_new = Qagg_new, price_new = price_new)
+```
+
+```{r}
+ggplot()+
+  geom_line(df_new, mapping=aes(Qagg_new,price_new, color = "yellow"))
 ```
 
 ```{r}
@@ -320,9 +334,9 @@ demand_agg_new <- function(p){
 price_new = seq(0, 31.6, length.out = 100)
 Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
 
-df_5<- tibble(Qagg_new = Qagg_new, price_new = price_new)
+df_5 <- tibble(Qagg_new = Qagg_new, price_new = price_new)
 
-ggplot(df, aes(Qagg_new, price_new)) +
+ggplot(df_5, aes(Qagg_new, price_new)) +
   geom_line()
 
 ```
@@ -331,7 +345,7 @@ ggplot(df, aes(Qagg_new, price_new)) +
 #map the new damnd curve and the old demand curve to make sure I did
 ggplot() +
   geom_line(df, mapping=aes(Qagg, price, color = "Old Agg Demand"))+
-  geom_line(df_2, mapping=aes(Qagg_new,price_new, color = "New Agg demand")) +
+  geom_line(df_new, mapping=aes(Qagg_new, price_new, color = "New Agg demand")) +
   scale_color_manual(values = c('red', 'blue')) +
   ylim(0,50) + 
   xlim(0,1000000)+
@@ -340,6 +354,18 @@ ggplot() +
        title = "Monthly Demand Curve for Electricity") + 
   theme_minimal()
 ```
+```{r}
+
+price = seq(0, 31.6, length.out = 100)
+Qagg_new <- map(price, demand_agg_new) %>% unlist()
+
+df_new<- tibble(Qagg_new = Qagg_new, price = price)
+
+ggplot(df, aes(Qagg_new, price)) +
+  geom_line()
+
+```
+
 
 ```{r}
 mpc_eq <- function(q)(mpc_slope*q)
@@ -347,28 +373,44 @@ mpc_eq <- function(q)(mpc_slope*q)
 
 
 ```{r}
-intersect <- function(l1, l2){
-    x <- (l2[1] - l1[1]) / (l1[2] - l2[2])
-    y <- l1[1] + l1[2] * x
-    return(xy=c(x, y))
-}
-
-l1 <- c(df_5)
-l2 <- c(df_4)
-
-xy <- intersect(l1,l2)
-xy
-```
-
-```{r}
 #create data frames for the MPC equation and the new demand curve function
 ```
 
+
+# Restarting Question 4 becsue I spent 2 hours doing wrong stuff but I'm too emotionally attached to the wrong code that I can't bring myself to delete it yet.
+4. Derive the optimal electricity tax (in cents per kWh) using the interim SCC. Noting that recent
+research has shown the poor face a disproportionate share of the impacts from climate change, assume that the climate externality is borne entirely by the “low” income group. What would be the effects of this tax on:
+(a) The amount of electricity produced and consumed
+(b) The price of electricity
+(c) Overall welfare of “high” income consumers
+(d) Overall welfare of “low” income consumers
+(e) Power suppliers (i.e., electricity producers)
+(f) Total environmental damage
+
 ```{r}
-xy <- intersect(demand_p_t_eq,mpc_eq)
+
+supply_p <- function(q){
+  p <- mpc_slope*q
+  return(p)
+}
+
+supply_q <- function(p){
+  q <- (p/mpc_slope)
+  return(q)
+}
+
+```
+
+
+```{r}
+# First I need to find the new demand curve by shifting the aggreh=get demand cueve down by the optimal tax
+
+demand-supply
+uniroot(function_you_write, c(0,600000))$root
 ```
 
 ```{r}
-p_t <- demand_p_t()= MPC()
+equilibrium_pt_free <- function(p)((demand(p, model_demand_l) + demand(p, model_demand_h))-(p/mpc_slope))
+uniroot(equilibrium_pt, c(0,600000))$root
 ```
 
