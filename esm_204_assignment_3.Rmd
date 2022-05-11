@@ -339,9 +339,10 @@ ggplot()+
   geom_line(df_new, mapping=aes(Qagg_new,price_new, color = "yellow"))
 ```
 
+**A:** The amount of electricity produced and consumed (increases or decreases) by r round(... , 0) kWh. The new total consumption is r round(...)kWh.
 
 ```{r}
-#map the new damnd curve and the old demand curve to make sure I did
+#map the new demand curve and the old demand curve to make sure I did
 ggplot() +
   geom_line(df, mapping=aes(Qagg, price, color = "Old Agg Demand"))+
   geom_line(df_new, mapping=aes(Qagg_new, price_new, color = "New Agg demand")) +
@@ -360,14 +361,14 @@ mpc_eq <- function(q)(mpc_slope*q)
 
 
 ```{r}
-# First I need to find the new demand curve by shifting the aggreh=get demand cueve down by the optimal tax
+# First I need to find the new demand curve by shifting the aggregate demand curve down by the optimal tax
 
 #demand-supply
 #uniroot(function_you_write, c(0,600000))$root
 ```
 
 ```{r}
-# First I need to find the new demand curve by shifting the aggreh=get demand cueve down by the optimal tax
+# First I need to find the new demand curve by shifting the aggregate demand curve down by the optimal tax
 equilibrium_pt_free_mkt <- function(p)((demand(p, model_demand_l) + demand(p, model_demand_h))-(p/mpc_slope))
 p_free_market <- uniroot(equilibrium_pt_free_mkt, c(0,600000))$root
 q_free_market <- demand_agg(p_free_market)
@@ -383,6 +384,9 @@ q_tax_51 <- demand_agg_new(p_tax_51)
 q_tax_51
 
 ```
+
+**B:** The price of electricity (increases or decreases) by $r round(..., 2). 
+Therefore the new price is $r p_new/kWh.
 
 ```{r}
 # Writing a new function for  consumer surplus:
@@ -420,9 +424,10 @@ consumer_surplus_low_true
 
 ```
 
-**C:** The overall welfare of "high" income consumers, with cost of taxes included, decreases by $`r round(consumer_surplus_high_t_51, 0)`.
+**C:** The overall welfare of "high" income consumers (with cost of taxes included) decreases by $`r round(consumer_surplus_high_t_51, 0)`.
 
-**D:** The overall welfare of "low" income consumers, with cost of taxes included, decreases by $`r round(consumer_surplus_low_t_51, 0)`.
+**D:** The overall welfare of "low" income consumers (with cost of taxes included) decreases by $`r round(consumer_surplus_low_t_51, 0)`. 
+*Side note: If we assume that low-income consumers bear the full cost of environmental damage associated with electricity production, then welfare was already negative before the tax was implemented.*
 
 ```{r}
 PS <- function(q){
@@ -430,13 +435,17 @@ PS <- function(q){
   return(ps)
 }
 # calculate the producer surplus 
-PS(q_tax_51)
+ps_change <- PS(q_tax_51)
 ```
+
+**E:** Power suppliers will have a producer surplus decrease by $`r round(ps_change, 0)`.
 
 ```{r}
 #calculate environmental damage --> I did this already 
 environmental_cost_t_51
 ```
+
+**F:** The total environmental damage will decrease by $`r round(environmental_cost_t_51, 0)`.
 
 ```{r}
 #calculate tax revenue 
@@ -444,6 +453,7 @@ tax_revenue_t_51 <- q_tax_51*1.96
 tax_revenue_t_51
 ```
 
+**G:** The total tax revenue generated will be $`r round(tax_revenue_t_51, 0)`. The tax revenue generated is equivalent to the total environmental cost.
 
 # Question 5 
 5. Now, assume that all revenue from the electricity tax will be redistributed to the consumers in proportion to their pre-tax consumption. For example, if 80% of the electricity was consumed by “high” income consumers, then they get 80% of the tax revenue. Additionally, consider the fact that current scientific evidence suggests the true SCC may be much higher than 51. For a range of SCC values (51, 75, 100, 125, and 150 per metric ton of CO2), calculate the effects of an SCC-based electricity tax on:
@@ -452,7 +462,38 @@ tax_revenue_t_51
 (c) Electricity producers
 
 ```{r}
+# Calculate the different price/kWh for different SCC values.
+# $75/ton SCC value = $75/(2205lbs/$0.85) = $0.0289/kWh
+# $100/ton SCC value = $100/(2205lbs/$0.85) = $0.0385/kWh
+# $125/ton SCC value = $125/(2205lbs/$0.85) = $0.0482/kWh
+# $150/ton SCC value = $150/(2205lbs/$0.85) = $0.0578/kWh
+
+price_scc_75 <- 2.89
+price_scc_100 <- 3.85
+price_scc_125 <- 4.82
+price_scc_150 <- 5.78
+
+```
+
+```{r}
+# Calculate consumption before tax
+
+low_consume <- demand(10, model_demand_l)/Q_f
+# 0.2260845 = 22.61%
+high_consume <- demand(10, model_demand_h)/Q_f
+# 0.7739155 = 77.39%
+```
+
+```{r}
+
+```
+
+
+
+```{r}
 # to calculate the "high" income consumers welfare under the tax rebate, it is CS + tax rebate 
+
+
 
 ```
 
@@ -461,3 +502,10 @@ tax_revenue_t_51
 high_rebate <- q_tax_51
 ```
 
+
+# Abi notes
+Stuff we still have to do:
+Adjust graphs in question 2 to not look bad, and add labels to the curves
+Fill in the right code portions for A and B
+Do questions 5 and 6
+Remove the parts of the code that show up in the html that don't need to be there (this should be done at the end)
