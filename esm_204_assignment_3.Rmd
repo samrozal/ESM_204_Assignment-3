@@ -507,16 +507,64 @@ ps_question5 <- ps_change/100
 **C:** The overall welfare to electricity producers is $`r round(ps_question5/100, 3)`
 
 
+#### Social Cost of Carbon at $75/ton
 
 ```{r}
 # to calculate the "high" income consumers welfare under the tax rebate, it is CS + tax rebate 
 
 # I think these are the CS but I am struggling to find tax rebate. I know this code is not complete yet, I am just trying to figure things out. 
-# price_CW_75 <- 2.89 + 
-# price_CW_100 <- 3.85 + 
-# price_CW_125 <- 4.82 + 
-# price_CW_150 <- 5.78 +
+price_CW_75 <- 2.89 
+price_CW_100 <- 3.85  
+price_CW_125 <- 4.82  
+price_CW_150 <- 5.78 
 ```
+
+```{r}
+#write a new demand function where the social cost of carbon is $75 dollars a ton
+demand_new_75<- function(p, model){
+  q <- (p - (model$coefficients[[1]]-(price_CW_75)))/model$coefficients[[2]]
+  q <- ifelse(q<0,0,q)
+  return(q)
+}   
+
+demand_agg_new_75 <- function(p){
+  q <- demand_new_75(p, model_demand_l) + demand_new(p, model_demand_h)
+  return(q)
+}
+
+equilibrium_pt_tax_75 <- function(p)((demand_new_75(p, model_demand_l) + demand_new_75(p, model_demand_h))-(p/mpc_slope))
+p_tax_75 <- uniroot(equilibrium_pt_tax_75, c(0,600000))$root
+p_tax_75
+
+q_tax_75 <- demand_agg_new_75(p_tax_51)
+q_tax_75
+
+CS_new_75 <- function(p, model){
+  q <- demand_new_75(p, model)
+  cs <- 0.5*(model$coefficients[[1]] - p)*q
+  return(cs)
+}
+
+CS_agg_75 <- function(p){
+  cs <- CS_new_75(p,model_demand_l) + CS_new(p,model_demand_h)
+  return(cs)
+}
+
+consumer_surplus_low_t_75 <- CS_new_75(p_tax_75,model_demand_l)
+consumer_surplus_high_t_75 <- CS_new_75(p_tax_75,model_demand_h)
+
+#calculate the tax revenue 
+tax_revenue_t_75 <- q_tax_75*(price_CW_75)
+
+#calculate producer surplus
+ps_t_75 <- PS(q_tax_75)
+
+#use tax revnue and consumer surplus to 
+h_welfare_75 <- (consumer_surplus_high_t_75 + high_consume * tax_revenue_t_75)/100
+l_welfare_75 <- (consumer_surplus_low_t_75 + low_consume * tax_revenue_t_75)/100
+
+```
+
 
 ```{r}
 #Write a function for rebate 
