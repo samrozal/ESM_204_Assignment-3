@@ -440,8 +440,24 @@ environmental_cost_t_51
 
 ```{r}
 #calculate tax revenue 
-tax_reveue_t_51 <- q_tax_51*1.96
+tax_revenue_t_51 <- q_tax_51*1.96
+tax_revenue_t_51
 ```
 
 
+# Question 5 
+5. Now, assume that all revenue from the electricity tax will be redistributed to the consumers in proportion to their pre-tax consumption. For example, if 80% of the electricity was consumed by “high” income consumers, then they get 80% of the tax revenue. Additionally, consider the fact that current scientific evidence suggests the true SCC may be much higher than 51. For a range of SCC values (51, 75, 100, 125, and 150 per metric ton of CO2), calculate the effects of an SCC-based electricity tax on:
+(a) Overall welfare of “high” income consumers
+(b) Overall welfare of “low” income consumers
+(c) Electricity producers
+
+```{r}
+# to calculate the "high" income consumers welfare under the tax rebate, it is CS + tax rebate 
+
+```
+
+```{r}
+#Write a function for rebate 
+high_rebate <- q_tax_51
+```
 
