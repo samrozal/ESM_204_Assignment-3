@@ -179,13 +179,12 @@ ggplot() +
   theme_minimal() + 
   theme(plot.title = element_text(hjust = 0.5))
 ```
-What is the aggregate monthly demand curve for electricity? 
-
+The aggregate monthly demand curve for electricity is shown in red
 
 What is the supply curve for electricity? 
-What is the “benefit” to consumers under the status quo?
-What is the “benefit” to producers under the status quo? 
-What is the environmental cost under the status quo?
+- The supply curve for electricity is shown in purple and can be expressed by the equation
+
+- P = `r round (mpc_slope, 7)`Q
 
 ```{r}
 #Find the q free market value at the market equilibrium point 
@@ -247,6 +246,11 @@ environmental_cost <- Q_f*1.96
 
 ```
 
+The “benefit” to consumers under the status quo is $`r round(consumer_surplus_agg/100,2)`
+
+The “benefit” to producers under the status quo is $`r round(producer_surplus_f/100,2)`
+
+The environmental cost under the status quo is`r round(environmental_cost/100,2)`
 
 
 # Question 3
@@ -328,7 +332,6 @@ ggplot()+
   geom_line(df_new, mapping=aes(Qagg_new,price_new, color = "yellow"))
 ```
 
-**A:** The amount of electricity produced and consumed (increases or decreases) by r round(... , 0) kWh. The new total consumption is r round(...)kWh.
 
 ```{r}
 #map the new demand curve and the old demand curve to make sure I did
@@ -363,6 +366,7 @@ p_free_market <- uniroot(equilibrium_pt_free_mkt, c(0,600000))$root
 q_free_market <- demand_agg(p_free_market)
 q_free_market
 ```
+
 ```{r}
 #calculating the intercept points
 equilibrium_pt_tax_51 <- function(p)((demand_new(p, model_demand_l) + demand_new(p, model_demand_h))-(p/mpc_slope))
@@ -374,8 +378,10 @@ q_tax_51
 
 ```
 
-**B:** The price of electricity (increases or decreases) by $r round(..., 2). 
-Therefore the new price is $r p_new/kWh.
+**A:** The new amount of electricity produced/consumed under the tax is `r q_tax_51` KWH. It decreased from status quo
+
+**B:** The price of electricity under a tax is $`r round(p_tax_51/100, 3)`. It decreased from status quo
+
 
 ```{r}
 # Writing a new function for  consumer surplus:
@@ -413,9 +419,9 @@ consumer_surplus_low_true
 
 ```
 
-**C:** The overall welfare of "high" income consumers (with cost of taxes included) decreases by $`r round(consumer_surplus_high_t_51, 0)`.
+**C:** The overall welfare of "high" income consumers under a new tax is $`r round(consumer_surplus_high_t_51, 0)`.
 
-**D:** The overall welfare of "low" income consumers (with cost of taxes included) decreases by $`r round(consumer_surplus_low_t_51, 0)`. 
+**D:** The overall welfare of "low" income consumers under a new tax is $`r round(consumer_surplus_low_t_51, 0)`. 
 *Side note: If we assume that low-income consumers bear the full cost of environmental damage associated with electricity production, then welfare was already negative before the tax was implemented.*
 
 ```{r}
@@ -427,14 +433,14 @@ PS <- function(q){
 ps_change <- PS(q_tax_51)
 ```
 
-**E:** Power suppliers will have a producer surplus decrease by $`r round(ps_change, 0)`.
+**E:** Power suppliers will have a producer surplus of $`r round(ps_change/100, 0)` under a tax.
 
 ```{r}
 #calculate environmental damage --> I did this already 
 environmental_cost_t_51
 ```
 
-**F:** The total environmental damage will decrease by $`r round(environmental_cost_t_51, 0)`.
+**F:** The total environmental damage be $`r round(environmental_cost_t_51, 0)` under a tax.
 
 ```{r}
 #calculate tax revenue 
