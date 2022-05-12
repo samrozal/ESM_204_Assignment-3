@@ -683,8 +683,17 @@ e_demand_agg <- function(p){
 ```{r}
 #to find new equilibrium price set the functions equal to each other
 uniroot_after_etax <- uniroot(function(p)
+<<<<<<< HEAD
+  e_demand_agg(p) - supply_q(p),
+  interval = c(0, 20))
+
+# I think we take the code from Q2 and and use the new model _ demand _ h curve I am trying to create in the code chunk above
+
+# eqmQ = function(a, b, c){qsar = a/(b+c), return(qstart), newQ = eqmQ(newq, newb, newc)}
+=======
   e_demand_agg(p) - supply_q(p), 
   interval = c(0,20))
+>>>>>>> 0efc10f223210c4a7d4ffb0e67ee463b5f50f3f6
 ```
 
 (b) What is the total environmental externality?
