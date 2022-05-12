@@ -486,7 +486,8 @@ ps_question5 <- ps_change
 **A:** The overall welfare to “high” income consumers is $`r round(h_welfare/100, 2)`
 ($47,303.22)
 
-**B:** The overall welfare of “low” income consumers is $`r round(l_welfare/100, 2)` 
+**B:** The overall welfare of “low” income consumers is $`r round(l_welfare/100, 2)`  
+
 ($-1,003.64). This indicates that for low income consumers there is a net loss.
 
 **C:** The overall welfare to electricity producers is $`r round(ps_question5/100, 3)`
@@ -519,10 +520,8 @@ demand_agg_new_75 <- function(p){
 
 equilibrium_pt_tax_75 <- function(p)((demand_new_75(p, model_demand_l) + demand_new_75(p, model_demand_h))-(p/mpc_slope))
 p_tax_75 <- uniroot(equilibrium_pt_tax_75, c(0,700000))$root
-p_tax_75
 
 q_tax_75 <- demand_agg_new_75(p_tax_51)
-q_tax_75
 
 consumer_surplus_low_t_75 <- CS((p_tax_75+price_CW_75),model_demand_l)
 consumer_surplus_high_t_75 <- CS((p_tax_75+price_CW_75),model_demand_h)
@@ -549,7 +548,9 @@ Under a $75 SCC:
 ($48,360.13)
 
 **B:** The overall welfare of “low” income consumers is $`r round(l_welfare_75/100, 2)`
+
 ($-5,022.43)
+
 **C:** The overall welfare to electricity producers is $`r round(ps_t_75/100, 3)`
 ($22,538.16)
 
@@ -569,10 +570,8 @@ demand_agg_new_100 <- function(p){
 
 equilibrium_pt_tax_100 <- function(p)((demand_new_100(p, model_demand_l) + demand_new_100(p, model_demand_h))-(p/mpc_slope))
 p_tax_100 <- uniroot(equilibrium_pt_tax_100, c(0,700000))$root
-p_tax_100
 
 q_tax_100 <- demand_agg_new_100(p_tax_100)
-q_tax_100
 
 consumer_surplus_low_t_100 <- CS((p_tax_100+price_CW_100),model_demand_l)
 consumer_surplus_high_t_100 <- CS((p_tax_100+price_CW_100),model_demand_h)
@@ -597,6 +596,7 @@ Under a $100 SCC:
 ($48881.02)
 
 **B:** The overall welfare of “low” income consumers is $`r round(l_welfare_100/100, 2)`
+
 ($-8524.49)
 
 **C:** The overall welfare to electricity producers is $`r round(ps_t_100/100, 3)`
@@ -645,6 +645,7 @@ Under a $125 SCC:
 ($49,412.58)
 
 **B:** The overall welfare of “low” income consumers is $`r round(l_welfare_125/100, 2)`
+
 ($-11954.71)
 
 **C:** The overall welfare to electricity producers is $`r round(ps_t_125/100, 3)`
@@ -694,24 +695,26 @@ Under a $150 SCC:
 ($49,749.32)
 
 **B:** The overall welfare of “low” income consumers is $`r round(l_welfare_150/100, 2)`
+
 ($-15047.83)
 
 **C:** The overall welfare to electricity producers is $`r round(ps_t_150/100, 3)`
 ($17,194.52)
 
 # Question 6 
-6. Suppose the “high” income group has access to expensive home solar generation. This lowers the electricity demand curve for the “high” income group by half (vertically). Under this new
-demand:
+6. Suppose the “high” income group has access to expensive home solar generation. This lowers the electricity demand curve for the “high” income group by half (vertically). Under this new demand:
 
 (a) What is total electricity consumption?
 
 ```{r}
+#Half the intercept of the demand function to lower the demand curve for the high income group by half.
 demand_new_solar<- function(p, model){
   q <- (p - (.5*model$coefficients[[1]]))/model$coefficients[[2]]
   q <- ifelse(q<0,0,q)
   return(q)
 }   
 
+#new agg demand function accounting for solar
 demand_agg_new_solar <- function(p){
   q <- demand(p, model_demand_l) + demand_new_solar(p, model_demand_h)
   return(q)
@@ -771,37 +774,79 @@ differnce <- demand_agg_new_solar_p(q_solar)-demand_agg_p_new(q_solar)
 differnce
 
 ```
+
+
+
 ```{r}
+#Half the intercept of the demand function to lower the demand curve for the high income group by half.
+demand_new_solar_2<- function(p, model){
+  q <- (p - ((model$coefficients[[1]]))/model$coefficients[[2]]*.5)
+  q <- ifelse(q<0,0,q)
+  return(q)
+}   
+
+#new agg demand function accounting for solar
+demand_agg_new_solar_2 <- function(p){
+  q <- demand(p, model_demand_l) + demand_new_solar_2(p, model_demand_h)
+  return(q)
+}
+
+equilibrium_pt_tax_solar_2 <- function(p)((demand(p, model_demand_l) + demand_new_solar_2(p, model_demand_h))-(p/mpc_slope))
+p_solar_2 <- uniroot(equilibrium_pt_tax_solar_2, c(0,700000))$root
+
+q_solar_2 <- demand_agg_new_solar_2(p_solar_2)
+
+
+```
+
+```{r}
+price_new = seq(0, 29.5, length.out = 100)
+Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
+
+df_new <- tibble(Qagg_new = Qagg_new, price_new = price_new)
+```
+
+**A:** The total electricity consumption is $`r round(q_solar, 2)`kwh.
+
+(b) What is the total environmental externality?
+```{r}
+environmental_cost_solar<- MEC*q_solar
+
+```
+**B:** The total electricity environmental externality is $`r round(environmental_cost_solar/100, 2)`.
+
+(c) What value of the electricity tax makes the total environmental damage the same as the
+damage when solar panels are available to the high income group?
+
+```{r}
+# rearrange to solve for p with the half demand function 
 demand_new_solar_p <- function(q, model){
   p <- (q*model$coefficients[[2]])+(0.5*model$coefficients[[1]])
   p <- ifelse(p<0,0,p)
   return(p)
 }   
 
+#rearrange to solve for p with the demand curve 
 demand_p <- function(q, model){
   p <- (q*model$coefficients[[2]])+(model$coefficients[[1]])
   p <- ifelse(p<0,0,p)
   return(p)
 }   
 
+demand_agg_new_solar_p <- function(q){
+  p <- demand_p(q, model_demand_l) + demand_new_solar_p(q, model_demand_h)
+  return(p)
+}
 
+demand_agg_p <- function(q){
+  p <- demand_p(q, model_demand_l) + demand_p(q, model_demand_h)
+  return(p)
+}
 
+diff <- demand_agg_p(q_solar) - demand_agg_new_solar_p(q_solar)
 
 ```
+**C:** The total electricity environmental externality is $`r diff` cents.
 
-
-
-- The total environmental damage is the area under the MEC evaluated at Q. For the situation where" "high” income group has access to solar panels, the environmental cost is $5671.87. 
-
-
-- Tax * Q = 567186.6
-
-- Q =  289380.9
-
-- Tax * 289380.9 = 567186.6
-
-- Tax = `r 567186.6/289380.9`cents
-
-- Tax = $`r 567186.6/289380.9/100` 
 
 
