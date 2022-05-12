@@ -716,12 +716,17 @@ environmental_cost_solar
 (c) What value of the electricity tax makes the total environmental damage the same as the
 damage when solar panels are available to the high income group?
 
-- The total environmental damage the area under the MEC evaluated at Q. So, we know that the Q value
+- The total environmental damage is the area under the MEC evaluated at Q. For the situation where" "high” income group has access to solar panels, the environmental cost is $5671.87. 
 
-```{r}
+- Tax * Q = 567186.6
 
-```
+- Q =  289380.9
 
+- Tax * 289380.9 = 567186.6
+
+- Tax = `r 567186.6/289380.9`cents
+
+- Tax = $`r(567186.6/289380.9)/100`
 
 
 # Abi notes
