@@ -728,83 +728,7 @@ q_solar <- demand_agg_new_solar(p_solar)
 
 ```
 
-```{r}
-price_new = seq(0, 29.5, length.out = 100)
-Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
 
-df_new <- tibble(Qagg_new = Qagg_new, price_new = price_new)
-```
-
-**A:** The total electricity consumption is $`r round(q_solar, 2)`kwh.
-
-(b) What is the total environmental externality?
-```{r}
-environmental_cost_solar<- MEC*q_solar
-
-```
-**B:** The total electricity environmental externality is $`r round(environmental_cost_solar/100, 2)`.
-
-(c) What value of the electricity tax makes the total environmental damage the same as the
-damage when solar panels are available to the high income group?
-
-```{r}
-demand_new_solar_p <- function(q, model){
-  p <- (q*model$coefficients[[2]])+(0.5*model$coefficients[[1]])
-  p <- ifelse(p<0,0,p)
-  return(p)
-}   
-
-demand_p <- function(q, model){
-  p <- (q*model$coefficients[[2]])+(model$coefficients[[1]])
-  p <- ifelse(p<0,0,p)
-  return(p)
-}   
-
-demand_agg_new_solar_p <- function(q){
-  p <- demand_p(q, model_demand_l) + demand_new_solar_p(q, model_demand_h)
-  return(p)
-}
-
-demand_agg_p_new <- function(q){
-  p <- demand_p(q, model_demand_l) + demand_new_solar_p(q, model_demand_h)
-  return(p)
-}
-
-differnce <- demand_agg_new_solar_p(q_solar)-demand_agg_p_new(q_solar)
-differnce
-
-```
-
-
-
-```{r}
-#Half the intercept of the demand function to lower the demand curve for the high income group by half.
-demand_new_solar_2<- function(p, model){
-  q <- (p - ((model$coefficients[[1]]))/model$coefficients[[2]]*.5)
-  q <- ifelse(q<0,0,q)
-  return(q)
-}   
-
-#new agg demand function accounting for solar
-demand_agg_new_solar_2 <- function(p){
-  q <- demand(p, model_demand_l) + demand_new_solar_2(p, model_demand_h)
-  return(q)
-}
-
-equilibrium_pt_tax_solar_2 <- function(p)((demand(p, model_demand_l) + demand_new_solar_2(p, model_demand_h))-(p/mpc_slope))
-p_solar_2 <- uniroot(equilibrium_pt_tax_solar_2, c(0,700000))$root
-
-q_solar_2 <- demand_agg_new_solar_2(p_solar_2)
-
-
-```
-
-```{r}
-price_new = seq(0, 29.5, length.out = 100)
-Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
-
-df_new <- tibble(Qagg_new = Qagg_new, price_new = price_new)
-```
 
 **A:** The total electricity consumption is $`r round(q_solar, 2)`kwh.
 
@@ -846,7 +770,6 @@ demand_agg_p <- function(q){
 diff <- demand_agg_p(q_solar) - demand_agg_new_solar_p(q_solar)
 
 ```
-**C:** The total electricity environmental externality is $`r diff` cents.
-
+**C:** The value of the electricity tax that makes the total environmental damage the same as the damage when solar panels are available to the high income group is $`r diff` cents. I got this by taking the difference between the original aggregate demand curve and the aggregate demand curve accounting for the halved demand of high income groups because of access to solar panels at the new equilibrium q point (which was found using the new aggregate demand curve )
 
 
