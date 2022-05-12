@@ -188,17 +188,23 @@ ggplot(df_4, aes(q_supply,supply_price)) +
 ```{r}
 ggplot() +
   geom_line(df, mapping=aes(Qagg, price, color = "blue"))+
+  annotate("text", x = 400000, y = 17,
+           label = "Aggregate Demand", angle = -30)+
   geom_line(df_2, mapping=aes(demand_low,price_low, color = "purple")) +
-  geom_line(df_3, mapping=aes(demand_high,price_high, color = "red")) + 
+  annotate("text", x = 300000, y = 15,
+           label = "High Income Demand", angle = -38)+
+  geom_line(df_3, mapping=aes(demand_high,price_high, color = "red")) +
+  annotate("text", x = 150000, y = 10,
+           label = "Low Income Demand", angle = -55)+
   geom_line(df_4, mapping=aes(q_supply,supply_price, color = "yellow"))+
-  scale_color_manual(values = c('red', 'blue', 'purple', 'green')) +
-  ylim(0,50) + 
-  xlim(0,1000000)+
+  annotate("text", x = 300000, y = 7,
+           label = "Supply", angle = 18)+
   labs(x = "Quantity of Electricty (kWh)",
        y = "Price per kWh",
        title = "Monthly Demand Curve for Electricity") + 
   theme_minimal() + 
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  theme(legend.position = "none")
 ```
 
 
