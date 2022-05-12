@@ -56,17 +56,11 @@ model_demand_l <- lm(price_cents  ~ q_low_kwh, data=df)
 model_demand_h <- lm(price_cents ~ q_high_kwh, data=df)
 ```
 
-```{r}
-summary(model_demand_l)
-summary(model_demand_h)
-```
 Equation of lines:
 
 - Low income demand curve: P = 23.4 - 0.00011Q
 
 - High income demand curve: P= 31.6 - 0.000052Q
-
-- Aggregate demand: P = 31.6 - 0.000052Q [Q<], P= 
 
 ```{r}
 # need to rearrange the parameter to get Q(P)! 
@@ -97,13 +91,6 @@ demand_agg <- function(p){
 ```
 
 
-```{r}
-demand_indv<- function(p, model){
-  q <- (p - model$coefficients[[1]])/model$coefficients[[2]]
-  return(q)
-}
-```
-
 
 ```{r}
 price_low = seq(0, 23.3, length.out = 100)
@@ -115,7 +102,7 @@ df_2 <- tibble(demand_low = demand_low, price_low = price_low)
 
 ggplot(df_2, aes(demand_low, price_low)) +
   geom_line() + 
-  labs(title = "Low Income Supply and Demand for Solar Panels", x = "low income demand", y = "low income price") + 
+  labs(title = "Low Income Demand for Electricity", x = "Quantity (KWH)", y = "Price") + 
   theme_light()
 ```
 
@@ -129,7 +116,7 @@ df_3 <- tibble(demand_high = demand_high, price_high = price_high)
 
 ggplot(df_2, aes(demand_high, price_high)) +
   geom_line() + 
-  labs(title = "title", x = "high demand", y = "high price") + 
+  labs(title = "High Income Demand for Electricity", x = "Quantity (KWH)", y = "Price") + 
   theme_light()
 ```
 
@@ -142,7 +129,7 @@ df<- tibble(Qagg = Qagg, price = price)
 
 ggplot(df, aes(Qagg, price)) +
   geom_line() + 
-  labs(title = "title", x = "Aggregate Demand Curve", y = "Price") + 
+  labs(title = "Aggregate Demand Curve", x = "Quantity(KWH)", y = "Price") + 
   theme_light()
 
 ```
@@ -152,7 +139,6 @@ ggplot(df, aes(Qagg, price)) +
 # Therefore, the slope of the supply curve can be found by doing (y2-y1/x2-x2) using the points (0,0) and (demand_agg(10),10). The zeros cancel out so we get:
 
 mpc_slope <- (10/(demand_agg(10)))
-mpc_slope
 
 supply_p <- function(q){
   p <- mpc_slope*q
@@ -164,10 +150,6 @@ supply_q <- function(p){
   return(q)
 }
 ```
-```{r}
-demand_agg(10)
-```
-
 
 ```{r}
 supply_price = seq(0, 31.6, length.out = 100)
@@ -179,7 +161,7 @@ df_4 <- tibble(q_supply = q_supply, supply_price = supply_price)
 
 ggplot(df_4, aes(q_supply,supply_price)) +
   geom_line() + 
-  labs(title = "title", x = "Q Supply", y = "Price of Supply") + 
+  labs(title = "Marginal Private Cost of Electricity", x = "Quantity (KWH)", y = "Price") + 
   theme_light()
 
 ```
@@ -197,7 +179,13 @@ ggplot() +
   theme_minimal() + 
   theme(plot.title = element_text(hjust = 0.5))
 ```
+What is the aggregate monthly demand curve for electricity? 
 
+
+What is the supply curve for electricity? 
+What is the “benefit” to consumers under the status quo?
+What is the “benefit” to producers under the status quo? 
+What is the environmental cost under the status quo?
 
 ```{r}
 #Find the q free market value at the market equilibrium point 
@@ -228,11 +216,7 @@ CS_agg <- function(p){
 consumer_surplus_low <- CS(10,model_demand_l)
 consumer_surplus_high <- CS(10,model_demand_h)
 
-consumer_surplus_low
-consumer_surplus_high
-
 consumer_surplus_agg <- CS_agg(10)
-consumer_surplus_agg
 
 ```
 
@@ -254,15 +238,17 @@ PS <- function(q){
 supply_q(10)
 PS(536719.5)
 producer_surplus_f <- PS(supply_q(10))
-producer_surplus_f
 
 ```
 
 ```{r}
 #environmental cost 
 environmental_cost <- Q_f*1.96
-environmental_cost
+
 ```
+
+
+
 # Question 3
 
 How is the current consumer benefit divided between “high” and “low” 
