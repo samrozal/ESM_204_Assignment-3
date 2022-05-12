@@ -533,7 +533,7 @@ demand_agg_new_75 <- function(p){
 }
 
 equilibrium_pt_tax_75 <- function(p)((demand_new_75(p, model_demand_l) + demand_new_75(p, model_demand_h))-(p/mpc_slope))
-p_tax_75 <- uniroot(equilibrium_pt_tax_75, c(0,600000))$root
+p_tax_75 <- uniroot(equilibrium_pt_tax_75, c(0,700000))$root
 p_tax_75
 
 q_tax_75 <- demand_agg_new_75(p_tax_51)
@@ -553,6 +553,7 @@ h_welfare_75 <- (consumer_surplus_high_t_75 + high_consume * tax_revenue_t_75)/1
 l_welfare_75 <- (consumer_surplus_low_t_75 + low_consume * tax_revenue_t_75)/100
 
 ```
+
 ```{r}
 #write a new demand function where the social cost of carbon is $100 dollars a ton
 demand_new_100<- function(p, model){
@@ -662,7 +663,7 @@ demand:
 (a) What is total electricity consumption?
 
 ```{r}
-# divide demand curve by 2
+# divide this demand curve by 2
 new_model_demand_h <- function(p,model){
 new_model_demand_h <- (p - (0.5 * model$coefficients[1]))/ model$coefficients[2]
 new_model_demand_h <- ifelse(q<0, 0, q)
@@ -678,27 +679,25 @@ e_demand_agg <- function(p){
   return(e_q)
 }
 # how do I divide this model by 2
+# new_model_demand_h <- lm(formula = (price_cents ~ q_high_kwh) * 0.5, data = df)
 ```
 
 ```{r}
 #to find new equilibrium price set the functions equal to each other
 uniroot_after_etax <- uniroot(function(p)
-<<<<<<< HEAD
-  e_demand_agg(p) - supply_q(p),
-  interval = c(0, 20))
-
+  e_demand_agg(p) - supply_q(p), 
+  interval = c(0,20))
 # I think we take the code from Q2 and and use the new model _ demand _ h curve I am trying to create in the code chunk above
 
 # eqmQ = function(a, b, c){qsar = a/(b+c), return(qstart), newQ = eqmQ(newq, newb, newc)}
-=======
-  e_demand_agg(p) - supply_q(p), 
-  interval = c(0,20))
->>>>>>> 0efc10f223210c4a7d4ffb0e67ee463b5f50f3f6
 ```
+
+
 
 (b) What is the total environmental externality?
 
 ```{r}
+@@ -615,7 +699,7 @@ uniroot_after_etax <- uniroot(function(p)
 (c) What value of the electricity tax makes the total environmental damage the same as the damage when solar panels are available to the high income group?
 
 ```{r}
