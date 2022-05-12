@@ -187,24 +187,15 @@ ggplot(df_4, aes(q_supply,supply_price)) +
 
 ```{r}
 ggplot() +
-  geom_line(df, mapping=aes(Qagg, price, color = "blue"))+
-  annotate("text", x = 400000, y = 17,
-           label = "Aggregate Demand", angle = -30)+
-  geom_line(df_2, mapping=aes(demand_low,price_low, color = "purple")) +
-  annotate("text", x = 300000, y = 15,
-           label = "High Income Demand", angle = -38)+
-  geom_line(df_3, mapping=aes(demand_high,price_high, color = "red")) +
-  annotate("text", x = 150000, y = 10,
-           label = "Low Income Demand", angle = -55)+
-  geom_line(df_4, mapping=aes(q_supply,supply_price, color = "yellow"))+
-  annotate("text", x = 300000, y = 7,
-           label = "Supply", angle = 18)+
+  geom_line(df, mapping=aes(Qagg, price, color = "Aggregate Demand"))+
+  geom_line(df_2, mapping=aes(demand_low,price_low, color = "Low Income Demand")) +
+  geom_line(df_3, mapping=aes(demand_high,price_high, color = "High Income Demand")) +
+  geom_line(df_4, mapping=aes(q_supply,supply_price, color = "Supply"))+
   labs(x = "Quantity of Electricty (kWh)",
        y = "Price per kWh",
        title = "Monthly Demand Curve for Electricity") + 
   theme_minimal() + 
-  theme(plot.title = element_text(hjust = 0.5)) + 
-  theme(legend.position = "none")
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 
@@ -560,6 +551,13 @@ l_welfare_75 <- (consumer_surplus_low_t_75 + low_consume * tax_revenue_t_75)/100
 
 ```
 
+**A:** The overall welfare to “high” income consumers is $`r round(h_welfare_75, 2)`.
+
+**B:** The overall welfare of “low” income consumers is $`r round(l_welfare_75, 2)`.
+
+**C:** The overall welfare to electricity producers is $`r round(ps_t_75/100, 3)`
+
+
 ```{r}
 #write a new demand function where the social cost of carbon is $100 dollars a ton
 demand_new_100<- function(p, model){
@@ -593,6 +591,14 @@ ps_t_100 <- PS(q_tax_100)
 h_welfare_100 <- (consumer_surplus_high_t_100 + high_consume * tax_revenue_t_100)/100
 l_welfare_100 <- (consumer_surplus_low_t_100 + low_consume * tax_revenue_t_100)/100
 ```
+
+**A:** The overall welfare to “high” income consumers is $`r round(h_welfare_100, 2)`.
+
+**B:** The overall welfare of “low” income consumers is $`r round(l_welfare_100, 2)`.
+
+**C:** The overall welfare to electricity producers is $`r round(ps_t_100/100, 3)`
+
+
 ```{r}
 #write a new demand function where the social cost of carbon is $125 dollars a ton
 demand_new_125 <- function(p, model){
@@ -626,6 +632,12 @@ ps_t_125 <- PS(q_tax_125)
 h_welfare_125 <- (consumer_surplus_high_t_125 + high_consume * tax_revenue_t_125)/100
 l_welfare_125 <- (consumer_surplus_low_t_125 + low_consume * tax_revenue_t_125)/100
 ```
+
+**A:** The overall welfare to “high” income consumers is $`r round(h_welfare_125, 2)`.
+
+**B:** The overall welfare of “low” income consumers is $`r round(l_welfare_125, 2)`.
+
+**C:** The overall welfare to electricity producers is $`r round(ps_t_125/100, 3)`
 
 ```{r}
 #write a new demand function where the social cost of carbon is $150 dollars a ton
@@ -661,6 +673,11 @@ h_welfare_150 <- (consumer_surplus_high_t_150 + high_consume * tax_revenue_t_150
 l_welfare_150 <- (consumer_surplus_low_t_150 + low_consume * tax_revenue_t_150)/100
 ```
 
+**A:** The overall welfare to “high” income consumers is $`r round(h_welfare_150, 2)`.
+
+**B:** The overall welfare of “low” income consumers is $`r round(l_welfare_150, 2)`.
+
+**C:** The overall welfare to electricity producers is $`r round(ps_t_150/100, 3)`
 
 # Question 6 
 6. Suppose the “high” income group has access to expensive home solar generation. This lowers the electricity demand curve for the “high” income group by half (vertically). Under this new
