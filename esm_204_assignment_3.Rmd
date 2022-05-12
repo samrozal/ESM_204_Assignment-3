@@ -684,8 +684,9 @@ e_demand_agg <- function(p){
 ```{r}
 #to find new equilibrium price set the functions equal to each other
 uniroot_after_etax <- uniroot(function(p)
-  e_demand_agg(p) - supply_q(p), 
-  interval = c(0,20))
+  e_demand_agg(p) - supply_q(p),
+  interval = c(0, 20))
+
 # I think we take the code from Q2 and and use the new model _ demand _ h curve I am trying to create in the code chunk above
 
 # eqmQ = function(a, b, c){qsar = a/(b+c), return(qstart), newQ = eqmQ(newq, newb, newc)}
