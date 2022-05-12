@@ -662,7 +662,7 @@ demand:
 (a) What is total electricity consumption?
 
 ```{r}
-# divide this demand curve by 2
+# divide demand curve by 2
 new_model_demand_h <- function(p,model){
 new_model_demand_h <- (p - (0.5 * model$coefficients[1]))/ model$coefficients[2]
 new_model_demand_h <- ifelse(q<0, 0, q)
