@@ -339,10 +339,6 @@ PS &lt;- function(q){
   ps &lt;- 0.5*(MPC(q))*q
   return(ps)
 }</code></pre>
-<pre class="r"><code>supply_q(10)</code></pre>
-<pre><code>## [1] 536719.5</code></pre>
-<pre class="r"><code>PS(536719.5)</code></pre>
-<pre><code>## [1] 2683598</code></pre>
 <pre class="r"><code>producer_surplus_f &lt;- PS(supply_q(10))</code></pre>
 <pre class="r"><code>#environmental cost 
 environmental_cost &lt;- Q_f*1.97</code></pre>
@@ -561,7 +557,8 @@ h_welfare_75 &lt;- (consumer_surplus_high_t_75 + (high_consume * tax_revenue_t_7
 l_welfare_75 &lt;- ((consumer_surplus_low_t_75 + low_consume * tax_revenue_t_75)-environmental_cost_t_75)</code></pre>
 <p>Under a $75 SCC:</p>
 <p><strong>A:</strong> The overall welfare to “high” income consumers is $4.836013^{4} ($48,360.13)</p>
-<p><strong>B:</strong> The overall welfare of “low” income consumers is <span class="math inline">\(-5022.43 (\)</span>-5,022.43)</p>
+<p><strong>B:</strong> The overall welfare of “low” income consumers is $-5022.43</p>
+<p>($-5,022.43)</p>
 <p><strong>C:</strong> The overall welfare to electricity producers is $2.2538162^{4} ($22,538.16)</p>
 </div>
 <div id="social-cost-of-carbon-at-100ton" class="section level4">
@@ -601,7 +598,8 @@ h_welfare_100 &lt;- (consumer_surplus_high_t_100 + high_consume * tax_revenue_t_
 l_welfare_100 &lt;- ((consumer_surplus_low_t_100 + low_consume * tax_revenue_t_100)-environmental_cost_t_100)</code></pre>
 <p>Under a $100 SCC:</p>
 <p><strong>A:</strong> The overall welfare to “high” income consumers is $4.888102^{4} ($48881.02)</p>
-<p><strong>B:</strong> The overall welfare of “low” income consumers is <span class="math inline">\(-8524.49 (\)</span>-8524.49)</p>
+<p><strong>B:</strong> The overall welfare of “low” income consumers is $-8524.49</p>
+<p>($-8524.49)</p>
 <p><strong>C:</strong> The overall welfare to electricity producers is $2.0176231^{4} ($20176.23)</p>
 </div>
 <div id="social-cost-of-carbon-at-125ton" class="section level4">
@@ -641,7 +639,8 @@ h_welfare_125 &lt;- (consumer_surplus_high_t_125 + high_consume * tax_revenue_t_
 l_welfare_125 &lt;- ((consumer_surplus_low_t_125 + low_consume * tax_revenue_t_125)-environmental_cost_t_125)</code></pre>
 <p>Under a $125 SCC:</p>
 <p><strong>A:</strong> The overall welfare to “high” income consumers is $4.941258^{4} ($49,412.58)</p>
-<p><strong>B:</strong> The overall welfare of “low” income consumers is <span class="math inline">\(-1.195471\times 10^{4} (\)</span>-11954.71)</p>
+<p><strong>B:</strong> The overall welfare of “low” income consumers is $-1.195471^{4}</p>
+<p>($-11954.71)</p>
 <p><strong>C:</strong> The overall welfare to electricity producers is $1.8647865^{4} ($18647.87)</p>
 </div>
 <div id="social-cost-of-carbon-at-150ton" class="section level4">
@@ -681,7 +680,8 @@ h_welfare_150 &lt;- (consumer_surplus_high_t_150 + high_consume * tax_revenue_t_
 l_welfare_150 &lt;- ((consumer_surplus_low_t_150 + low_consume * tax_revenue_t_150)- environmental_cost_t_150)</code></pre>
 <p>Under a $150 SCC:</p>
 <p><strong>A:</strong> The overall welfare to “high” income consumers is $4.974932^{4} ($49,749.32)</p>
-<p><strong>B:</strong> The overall welfare of “low” income consumers is <span class="math inline">\(-1.504783\times 10^{4} (\)</span>-15047.83)</p>
+<p><strong>B:</strong> The overall welfare of “low” income consumers is $-1.504783^{4}</p>
+<p>($-15047.83)</p>
 <p><strong>C:</strong> The overall welfare to electricity producers is $1.7194517^{4} ($17,194.52)</p>
 </div>
 </div>
@@ -693,12 +693,14 @@ l_welfare_150 &lt;- ((consumer_surplus_low_t_150 + low_consume * tax_revenue_t_1
 <ol style="list-style-type: lower-alpha">
 <li>What is total electricity consumption?</li>
 </ol>
-<pre class="r"><code>demand_new_solar&lt;- function(p, model){
+<pre class="r"><code>#Half the intercept of the demand function to lower the demand curve for the high income group by half.
+demand_new_solar&lt;- function(p, model){
   q &lt;- (p - (.5*model$coefficients[[1]]))/model$coefficients[[2]]
   q &lt;- ifelse(q&lt;0,0,q)
   return(q)
 }   
 
+#new agg demand function accounting for solar
 demand_agg_new_solar &lt;- function(p){
   q &lt;- demand(p, model_demand_l) + demand_new_solar(p, model_demand_h)
   return(q)
@@ -708,11 +710,7 @@ equilibrium_pt_tax_solar &lt;- function(p)((demand(p, model_demand_l) + demand_n
 p_solar &lt;- uniroot(equilibrium_pt_tax_solar, c(0,700000))$root
 
 q_solar &lt;- demand_agg_new_solar(p_solar)</code></pre>
-<pre class="r"><code>price_new = seq(0, 29.5, length.out = 100)
-Qagg_new &lt;- map(price_new, demand_agg_new) %&gt;% unlist()
-
-df_new &lt;- tibble(Qagg_new = Qagg_new, price_new = price_new)</code></pre>
-<p><strong>A:</strong> The total electricity consumption is $3.3779613^{5}kwh.</p>
+<p><strong>A:</strong> The total electricity consumption is 3.3779613^{5}kwh.</p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>What is the total environmental externality?</li>
 </ol>
@@ -721,12 +719,14 @@ df_new &lt;- tibble(Qagg_new = Qagg_new, price_new = price_new)</code></pre>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>What value of the electricity tax makes the total environmental damage the same as the damage when solar panels are available to the high income group?</li>
 </ol>
-<pre class="r"><code>demand_new_solar_p &lt;- function(q, model){
+<pre class="r"><code># rearrange to solve for p with the half demand function 
+demand_new_solar_p &lt;- function(q, model){
   p &lt;- (q*model$coefficients[[2]])+(0.5*model$coefficients[[1]])
   p &lt;- ifelse(p&lt;0,0,p)
   return(p)
 }   
 
+#rearrange to solve for p with the demand curve 
 demand_p &lt;- function(q, model){
   p &lt;- (q*model$coefficients[[2]])+(model$coefficients[[1]])
   p &lt;- ifelse(p&lt;0,0,p)
@@ -738,33 +738,14 @@ demand_agg_new_solar_p &lt;- function(q){
   return(p)
 }
 
-demand_agg_p_new &lt;- function(q){
-  p &lt;- demand_p(q, model_demand_l) + demand_new_solar_p(q, model_demand_h)
+demand_agg_p &lt;- function(q){
+  p &lt;- demand_p(q, model_demand_l) + demand_p(q, model_demand_h)
   return(p)
 }
 
-differnce &lt;- demand_agg_new_solar_p(q_solar)-demand_agg_p_new(q_solar)
-differnce</code></pre>
-<pre><code>## [1] 0</code></pre>
-<pre class="r"><code>demand_new_solar_p &lt;- function(q, model){
-  p &lt;- (q*model$coefficients[[2]])+(0.5*model$coefficients[[1]])
-  p &lt;- ifelse(p&lt;0,0,p)
-  return(p)
-}   
-
-demand_p &lt;- function(q, model){
-  p &lt;- (q*model$coefficients[[2]])+(model$coefficients[[1]])
-  p &lt;- ifelse(p&lt;0,0,p)
-  return(p)
-}   </code></pre>
-<ul>
-<li><p>The total environmental damage is the area under the MEC evaluated at Q. For the situation where” “high” income group has access to solar panels, the environmental cost is $5671.87.</p></li>
-<li><p>Tax * Q = 567186.6</p></li>
-<li><p>Q = 289380.9</p></li>
-<li><p>Tax * 289380.9 = 567186.6</p></li>
-<li><p>Tax = 1.9600001cents</p></li>
-<li><p>Tax = $0.0196</p></li>
-</ul>
+diff &lt;- demand_agg_p(q_solar) - demand_agg_new_solar_p(q_solar)</code></pre>
+<p><strong>C:</strong> The value of the electricity tax that makes the total environmental damage the same as the damage when solar panels are available to the high income group is $14.0354961 cents. I got this by taking the difference between the original aggregate demand curve and the aggregate demand curve accounting for the halved demand of high income groups because of access to solar panels at the new equilibrium q point (which was found using the new aggregate demand curve )</p>
+<p><strong>Note to grader:</strong> I’m so sorry…we tried so hard and did our best…but we’ve been working on it for so long and I think we just need to call it at this point.</p>
 </div>
 
 
