@@ -628,7 +628,7 @@ l_welfare_125 <- (consumer_surplus_low_t_125 + low_consume * tax_revenue_t_125)/
 ```
 
 ```{r}
-#write a new demand function where the social cost of carbon is $100 dollars a ton
+#write a new demand function where the social cost of carbon is $150 dollars a ton
 demand_new_150<- function(p, model){
   q <- (p - (model$coefficients[[1]]-(price_CW_150)))/model$coefficients[[2]]
   q <- ifelse(q<0,0,q)
@@ -641,7 +641,7 @@ demand_agg_new_150 <- function(p){
 }
 
 equilibrium_pt_tax_150 <- function(p)((demand_new_150(p, model_demand_l) + demand_new_150(p, model_demand_h))-(p/mpc_slope))
-p_tax_150 <- uniroot(equilibrium_pt_tax_150, c(0,600000))$root
+p_tax_150 <- uniroot(equilibrium_pt_tax_150, c(0,700000))$root
 p_tax_150
 
 q_tax_150 <- demand_agg_new_150(p_tax_150)
@@ -669,47 +669,42 @@ demand:
 (a) What is total electricity consumption?
 
 ```{r}
-# divide this demand curve by 2
-new_model_demand_h <- function(p,model){
-new_model_demand_h <- (p - (0.5 * model$coefficients[1]))/ model$coefficients[2]
-new_model_demand_h <- ifelse(q<0, 0, q)
+demand_new_solar<- function(p, model){
+  q <- (p - (.5*model$coefficients[[1]]))/model$coefficients[[2]]
+  q <- ifelse(q<0,0,q)
+  return(q)
+}   
+
+demand_agg_new_solar <- function(p){
+  q <- demand(p, model_demand_l) + demand_new_solar(p, model_demand_h)
   return(q)
 }
-model_demand_h
+
+equilibrium_pt_tax_150 <- function(p)((demand(p, model_demand_l) + demand_new_solar(p, model_demand_h))-(p/mpc_slope))
+p_solar <- uniroot(equilibrium_pt_tax_150, c(0,700000))$root
+p_solar
+
+q_solar <- demand_agg_new_solar(p_tax_150)
+q_solar
+
 ```
-
-```{r}
-#new agg demand function 
-e_demand_agg <- function(p){
-  e_q <- new_model_demand_h(p, model_demand_l) + new_model_demand_h(p, model_demand_h)
-  return(e_q)
-}
-# how do I divide this model by 2
-# new_model_demand_h <- lm(formula = (price_cents ~ q_high_kwh) * 0.5, data = df)
-```
-
-```{r}
-#to find new equilibrium price set the functions equal to each other
-uniroot_after_etax <- uniroot(function(p)
-  e_demand_agg(p) - supply_q(p), 
-  interval = c(0,20))
-# I think we take the code from Q2 and and use the new model _ demand _ h curve I am trying to create in the code chunk above
-
-# eqmQ = function(a, b, c){qsar = a/(b+c), return(qstart), newQ = eqmQ(newq, newb, newc)}
-```
-
-
 
 (b) What is the total environmental externality?
-
 ```{r}
-@@ -615,7 +699,7 @@ uniroot_after_etax <- uniroot(function(p)
-(c) What value of the electricity tax makes the total environmental damage the same as the damage when solar panels are available to the high income group?
-
-```{r}
-# after we shift the demand curve by half, find MEC from scc (total env damage) under new demand curve, q * mec because area under the mec evaulated at q = total env damage, we are trying to find the tax that will make the two wedges (between MSC and MPC) the same? 
-# I have no idea
+environmental_cost_solar<- MEC*q_tax_solar
+environmental_cost_solar
 ```
+
+
+(c) What value of the electricity tax makes the total environmental damage the same as the
+damage when solar panels are available to the high income group?
+
+- The total environmental damage the area under the MEC evaluated at Q. So, we know that the Q value
+
+```{r}
+
+```
+
 
 
 # Abi notes
