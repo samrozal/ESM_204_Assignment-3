@@ -115,7 +115,7 @@ df_2 <- tibble(demand_low = demand_low, price_low = price_low)
 
 ggplot(df_2, aes(demand_low, price_low)) +
   geom_line() + 
-  labs(title = "Low Income Supply and Demand for Solar Panels", x = "low income demand", y = "low income price") + 
+  labs(title = "Low Income Demand", x = "low income demand", y = "low income price") + 
   theme_light()
 ```
 
@@ -129,7 +129,7 @@ df_3 <- tibble(demand_high = demand_high, price_high = price_high)
 
 ggplot(df_2, aes(demand_high, price_high)) +
   geom_line() + 
-  labs(title = "title", x = "high demand", y = "high price") + 
+  labs(title = "High Income Demand", x = "high demand", y = "high price") + 
   theme_light()
 ```
 
@@ -142,7 +142,7 @@ df<- tibble(Qagg = Qagg, price = price)
 
 ggplot(df, aes(Qagg, price)) +
   geom_line() + 
-  labs(title = "title", x = "Aggregate Demand Curve", y = "Price") + 
+  labs(title = "Aggregate Demand", x = "Aggregate Demand Curve", y = "Price") + 
   theme_light()
 
 ```
@@ -152,7 +152,6 @@ ggplot(df, aes(Qagg, price)) +
 # Therefore, the slope of the supply curve can be found by doing (y2-y1/x2-x2) using the points (0,0) and (demand_agg(10),10). The zeros cancel out so we get:
 
 mpc_slope <- (10/(demand_agg(10)))
-mpc_slope
 
 supply_p <- function(q){
   p <- mpc_slope*q
@@ -179,7 +178,7 @@ df_4 <- tibble(q_supply = q_supply, supply_price = supply_price)
 
 ggplot(df_4, aes(q_supply,supply_price)) +
   geom_line() + 
-  labs(title = "title", x = "Q Supply", y = "Price of Supply") + 
+  labs(title = "Supply Curve", x = "Q Supply", y = "Price of Supply") + 
   theme_light()
 
 ```
@@ -228,11 +227,7 @@ CS_agg <- function(p){
 consumer_surplus_low <- CS(10,model_demand_l)
 consumer_surplus_high <- CS(10,model_demand_h)
 
-consumer_surplus_low
-consumer_surplus_high
-
 consumer_surplus_agg <- CS_agg(10)
-consumer_surplus_agg
 
 ```
 
@@ -254,14 +249,12 @@ PS <- function(q){
 supply_q(10)
 PS(536719.5)
 producer_surplus_f <- PS(supply_q(10))
-producer_surplus_f
 
 ```
 
 ```{r}
 #environmental cost 
 environmental_cost <- Q_f*1.96
-environmental_cost
 ```
 # Question 3
 
@@ -337,12 +330,12 @@ Qagg_new <- map(price_new, demand_agg_new) %>% unlist()
 df_new <- tibble(Qagg_new = Qagg_new, price_new = price_new)
 ```
 
-```{r}
+```{r, include=FALSE}
 ggplot()+
   geom_line(df_new, mapping=aes(Qagg_new,price_new, color = "yellow"))
 ```
 
-**A:** The amount of electricity produced and consumed (increases or decreases) by r round(... , 0) kWh. The new total consumption is r round(...)kWh.
+
 
 ```{r}
 #map the new demand curve and the old demand curve to make sure I did
@@ -375,21 +368,18 @@ mpc_eq <- function(q)(mpc_slope*q)
 equilibrium_pt_free_mkt <- function(p)((demand(p, model_demand_l) + demand(p, model_demand_h))-(p/mpc_slope))
 p_free_market <- uniroot(equilibrium_pt_free_mkt, c(0,600000))$root
 q_free_market <- demand_agg(p_free_market)
-q_free_market
 ```
 ```{r}
 #calculating the intercept points
 equilibrium_pt_tax_51 <- function(p)((demand_new(p, model_demand_l) + demand_new(p, model_demand_h))-(p/mpc_slope))
 p_tax_51 <- uniroot(equilibrium_pt_tax_51, c(0,600000))$root
-p_tax_51
 
 q_tax_51 <- demand_agg_new(p_tax_51)
-q_tax_51
 
 ```
 
-**B:** The price of electricity (increases or decreases) by $r round(..., 2). 
-Therefore the new price is $r p_new/kWh.
+**A:** The amount of electricity produced and consumed is $`r round(q_tax_51, 2)` kWh. 
+**B:** The price of electricity is $`r round(p_tax_51, 2)`/kWh
 
 ```{r}
 # Writing a new function for  consumer surplus:
@@ -412,18 +402,14 @@ CS_agg <- function(p){
 consumer_surplus_low_t_51 <- CS((p_tax_51+1.96),model_demand_l)
 consumer_surplus_high_t_51 <- CS((p_tax_51+1.96),model_demand_h)
 
-consumer_surplus_low_t_51
-consumer_surplus_high_t_51
 
-#however, low income consumers will bear the brunt of the environmental cost, so we need to calculate the total enviromental cost.
+#however, low income consumers will bear the brunt of the environmental cost, so we need to calculate the total environmental cost.
 
 MEC <- 1.96
 
 environmental_cost_t_51 <- MEC*q_tax_51
-environmental_cost_t_51
 
 consumer_surplus_low_true <- consumer_surplus_low-environmental_cost_t_51
-consumer_surplus_low_true
 
 ```
 
@@ -444,8 +430,8 @@ ps_change <- PS(q_tax_51)
 **E:** Power suppliers will have a producer surplus decrease by $`r round(ps_change, 0)`.
 
 ```{r}
-#calculate environmental damage --> I did this already 
-environmental_cost_t_51
+# calculate environmental damage --> Did this already, reference:
+# environmental_cost_t_51
 ```
 
 **F:** The total environmental damage will decrease by $`r round(environmental_cost_t_51, 0)`.
@@ -453,7 +439,6 @@ environmental_cost_t_51
 ```{r}
 #calculate tax revenue 
 tax_revenue_t_51 <- q_tax_51*1.96
-tax_revenue_t_51
 ```
 
 **G:** The total tax revenue generated will be $`r round(tax_revenue_t_51, 0)`. The tax revenue generated is equivalent to the total environmental cost.
@@ -669,8 +654,8 @@ tax_revenue_t_150 <- q_tax_150*(price_CW_150)
 ps_t_150 <- PS(q_tax_150)
 
 #use tax revnue and consumer surplus to 
-h_welfare_150 <- (consumer_surplus_high_t_150 + high_consume * tax_revenue_t_150)/100
-l_welfare_150 <- (consumer_surplus_low_t_150 + low_consume * tax_revenue_t_150)/100
+h_welfare_150 <- (consumer_surplus_high_t_150 + high_consume * tax_revenue_t_150)
+l_welfare_150 <- (consumer_surplus_low_t_150 + low_consume * tax_revenue_t_150)
 ```
 
 **A:** The overall welfare to “high” income consumers is $`r round(h_welfare_150, 2)`.
@@ -708,8 +693,8 @@ q_solar
 
 (b) What is the total environmental externality?
 ```{r}
-environmental_cost_solar<- MEC*q_tax_solar
-environmental_cost_solar
+#environmental_cost_solar<- MEC*q_tax_solar
+#environmental_cost_solar
 ```
 
 
@@ -731,7 +716,6 @@ damage when solar panels are available to the high income group?
 
 # Abi notes
 Stuff we still have to do:
-Adjust graphs in question 2 to not look bad, and add labels to the curves -- Hollie updated the labels but did not label them cause idk what they're labeled. 
 Fill in the right code portions for A and B 
 Do questions 5 and 6
 Remove the parts of the code that show up in the html that don't need to be there (this should be done at the end)
